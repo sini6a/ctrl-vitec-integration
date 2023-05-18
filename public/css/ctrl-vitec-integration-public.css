@@ -3,28 +3,87 @@
  * included in this file.
  */
 
- .wrapper {
-    width: 100%;
- }
-
-.row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
+.ctrl h1,h2 {
+  text-align: center;
 }
 
-.column {
+.listing {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
     display: flex;
-    flex-direction: column;
-    flex-basis: 100%;
+}
+
+.listing a {
+  text-decoration: none;
+}
+
+.object-title {
+  margin-bottom: 5px;
+}
+
+.listing-thumbnail {
+    flex: 0 0 250px;
+    margin-right: 20px;
+}
+
+.listing-thumbnail img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.listing-content {
     flex: 1;
-  }
-
-.object-listing-title {
-    font-size: 25pt;
 }
 
-.object-listing-main-image {
-    
+.listing h2 {
+    margin-top: 0;
+}
+
+.ctrl .listing p {
+    margin: 10px 0;
+}
+
+.property {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.property-image {
+  display: inline-block;
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+
+.property-details {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.property-details h2 {
+  margin-top: 0;
+}
+
+.property-details p {
+  margin: 10px 0;
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border: solid 1px #4CAF50;
+  color: #fff;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.button:hover {
+  background-color: #45a049;
 }

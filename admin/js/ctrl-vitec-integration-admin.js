@@ -30,3 +30,7 @@
 	 */
 
 })( jQuery );
+
+jQuery(document).ready(function($){
+    $('input[name="ctrl_options[ctrl_field_bgcolor]"]').wpColorPicker();
+});

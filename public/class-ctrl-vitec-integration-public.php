@@ -20,6 +20,65 @@
  * @subpackage Ctrl_Vitec_Integration/public
  * @author     CTRL <info@ctrl.mk>
  */
+class Cat {
+	public $fact;
+
+	public function __construct() {
+
+		$request = "https://catfact.ninja/fact";
+		$response = file_get_contents($request);
+		$data = json_decode($response, true);
+		$this->fact = $data["fact"];
+
+	}
+
+	public function getFact() {
+		return $this->fact;
+	}
+
+}
+
+class Property {
+	private $houses, $cottages, $housingCooperativeses, $plots, $projects, $farms, $condominiums, $foreignProperties, $premises;
+
+	function __construct() {
+		// fetch data from the api
+
+		// parse the fetched data
+
+		// save data to $this
+	}
+
+	function getHouses() {
+		return $this->houses;
+	}
+	function getCottages() {
+		return $this->cottages;
+	}
+	function getHousing() {
+		return $this->housingCooperativeses;
+	}
+	function getPlots() {
+		return $this->plots;
+	}
+	function getProjects() {
+		return $this->projects;
+	}
+	function getFarms() {
+		return $this->farms;
+	}
+	function getCondominiums() {
+		return $this->condominiums;
+	}
+	function getForeignProperties() {
+		return $this->foreignProperties;
+	}
+
+	function getPremises() {
+		return $this->premises;
+	}
+}
+
 class Ctrl_Vitec_Integration_Public {
 
 	/**
@@ -41,10 +100,18 @@ class Ctrl_Vitec_Integration_Public {
 	private $version;
 
 	/**
-	 * Variables needed for fetching data.
+	 * Variables needed for fetching options.
 	 */
-	private $username;
-	private $password;
+	private $username, $password;
+
+	private $objects;
+
+	private $placeholder;
+	private $object_1;
+	private $object_2;
+	private $object_3;
+
+	private $cat;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -57,10 +124,42 @@ class Ctrl_Vitec_Integration_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		
 		$this->username = get_option('ctrl_options')['ctrl_field_username'];
 		$this->password = get_option('ctrl_options')['ctrl_field_password'];
-		add_shortcode('testing_shortcode', array($this, 'tbare_wordpress_plugin_demo'));
 
+		$this->placeholder = plugin_dir_url( __FILE__ ) . 'images/ctrl-vitec-integration-placeholder.png';
+
+		$this->object_1 = array(
+			"id" => 1,
+			"title" => "Vila i Göteborg",
+			"price" => "2,000,000.00",
+			"location" => "Göteborg",
+			"description" => "Vackert vila mitt i centrum!",
+		);
+
+		$this->object_2 = array(
+			"id" => 2,
+			"title" => "Lägenhet i Stenpiren",
+			"price" => "3,500,00.00",
+			"location" => "Göteborg",
+			"description" => "Vackert lägenhet mitt i stan!",
+		);
+
+		$this->object_3 = array(
+			"id" => 3,
+			"title" => "Tömt utanför Umeå",
+			"price" => "1,500,00.00",
+			"location" => "Umeå",
+			"description" => "Stör tömt säljs utanför Umeå!",
+		);
+
+		$this->objects = [$this->object_1, $this->object_2, $this->object_3];
+
+		add_shortcode('testing_shortcode', array($this, 'tbare_wordpress_plugin_demo'));
+		add_action('wp_enqueue_styles', array($this, 'enqueue_styles') );
+
+		$this->cat = new Cat();
 	}
 
 	/**
@@ -110,31 +209,17 @@ class Ctrl_Vitec_Integration_Public {
 	}
 
 	function tbare_wordpress_plugin_demo($atts = [], $content = null) {
-		$Content = "<style>\r\n";
-		$Content .= "h3.demoClass {\r\n";
-		$Content .= "color: #26b158;\r\n";
-		$Content .= "}\r\n";
-		$Content .= "</style>\r\n";
-		$Content .= '<h3 class="demoClass">Check it out!</h3>';
+		if(isset($_GET['object_id'])){
+			$object = $this->objects[$_GET['object_id'] - 1];
+			
 
-
-		$object_listing_title = $this->username;
-		$object_listing_main_image = "http://localhost/wp-content/uploads/2023/05/frakt.png";
-
-		
-		// Begin output buffering here. Any output below will be stored in a buffer.
-		ob_start();
-
-			// Return, as previously used, doesn't help in this context.
-			include_once( 'partials/ctrl-vitec-integration-public-display.php' );
-	
-		// Return (and delete unlike ob_get_contents()) the content of the buffer.
-		return ob_get_clean();
-		# return "<p>Testiranjeeeeee</p>";
+			ob_start();
+			include_once( 'partials/object-view.php' );
+			return ob_get_clean();
+		} else {
+			ob_start();
+			include_once( 'partials/object-listing.php' );
+			return ob_get_clean();
+		}
 	}
-
-	function fetch_all_objects() {
-
-	}
-
 }

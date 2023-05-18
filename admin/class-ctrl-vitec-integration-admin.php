@@ -55,6 +55,7 @@ class Ctrl_Vitec_Integration_Admin
 		$this->version = $version;
 		add_action( 'admin_init', array($this, 'ctrl_settings_init') );
 		add_action( 'admin_menu', array($this, 'ctrl_options_page') );
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts') );
 
 	}
 
@@ -78,6 +79,7 @@ class Ctrl_Vitec_Integration_Admin
 		 * class.
 		 */
 
+		wp_enqueue_style( 'wp-color-picker');
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ctrl-vitec-integration-admin.css', array(), $this->version, 'all');
 
 	}
@@ -102,8 +104,8 @@ class Ctrl_Vitec_Integration_Admin
 		 * class.
 		 */
 
+		wp_enqueue_script( 'wp-color-picker');
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ctrl-vitec-integration-admin.js', array('jquery'), $this->version, false);
-
 	}
 
 	/**
@@ -188,6 +190,19 @@ class Ctrl_Vitec_Integration_Admin
 				'ctrl_custom_data' => 'custom',
 			)
 		);
+		add_settings_field(
+			'background-color-field',
+			// As of WP 4.6 this value is used only internally.
+			// Use $args' label_for to populate the id inside the callback.
+			__('Background Color', 'ctrl'),
+			array($this, 'ctrl_field_bgcolor_cb'),
+			'ctrl',
+			'ctrl_section_developers',
+			array(
+				'label_for' => 'ctrl_field_bgcolor',
+				'class' => 'ctrl_row',
+			)
+		);
 	}
 
 
@@ -229,6 +244,15 @@ class Ctrl_Vitec_Integration_Admin
 		?>
 		<input
 			name="ctrl_options[<?php echo esc_attr( $args['label_for'] ); ?>]" placeholder="Your Vitec Password" type="password" value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
+		<?php
+	}
+	function ctrl_field_bgcolor_cb($args)
+	{
+		// Get the value of the setting we've registered with register_setting()
+		$options = get_option('ctrl_options');
+		?>
+		<input
+			name="ctrl_options[<?php echo esc_attr( $args['label_for'] ); ?>]" placeholder="Background HEX Code" type="text" value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
 		<?php
 	}
 
