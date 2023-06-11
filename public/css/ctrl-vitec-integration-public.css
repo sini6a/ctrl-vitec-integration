@@ -76,7 +76,7 @@ a {
   height: auto;
 }
 
-.button {
+/* .button {
   display: flex;
   padding: 10px 20px;
   margin: 25px 0 0 0;
@@ -92,7 +92,7 @@ a {
 .button:hover {
   background-color: #545454;
   color: #fff;
-}
+} */
 
 .fact {
   padding: 25px;
@@ -325,7 +325,7 @@ a {
   }
 
   .agent .column {
-    flex: 0 1 175px;
+    flex: 0 1 250px;
 
   }
 
