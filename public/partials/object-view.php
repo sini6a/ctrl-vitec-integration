@@ -51,7 +51,7 @@
           <p>Antal Rum: </p>
           <p>
             <strong>
-              <?php echo isset($object["houseInterior"]["numberOfRooms"]) ? $object["houseInterior"]["numberOfRooms"] : "Okänd" ?>
+              <?php echo isset($object["interior"]["numberOfRooms"]) ? $object["interior"]["numberOfRooms"] : "Okänd" ?>
             </strong>
           </p>
         </div>
@@ -61,7 +61,7 @@
           <p>Antal Sovrum: </p>
           <p>
             <strong>
-              <?php echo isset($object["houseInterior"]["numberOffBedroom"]) ? $object["houseInterior"]["numberOffBedroom"] : "Okänd" ?>
+              <?php echo isset($object["interior"]["numberOfBedroom"]) ? $object["interior"]["numberOfBedroom"] : "Okänd" ?>
             </strong>
           </p>
         </div>
@@ -98,9 +98,7 @@
     <div class="row">
       <div class="column" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
         <h5 class="center">VISNING</h5>
-        <p>
-          <?php echo isset($object['viewings'][0]['commentary']) ? $object['viewings'][0]['commentary'] : 'Kontakta oss om du är intresserad av en visning' ?>
-        </p>
+        <?php isset($object["viewings"]) ? include_once('object-view-partials/visning.php') : null ?>
       </div>
     </div>
   </section>
@@ -126,246 +124,22 @@
 
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
 
-    <h5>Interiör</h5>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Antal Rum: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["houseInterior"]["numberOfRooms"]) ? $object["houseInterior"]["numberOfRooms"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Antal Sovrum: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["houseInterior"]["numberOffBedroom"]) ? $object["houseInterior"]["numberOffBedroom"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
+    <?php isset($object["interior"]) ? include_once('object-view-partials/interiör.php') : null ?>
 
-    <h5>Ventilation</h5>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Typ: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["ventilation"]["type"]) ? $object["ventilation"]["type"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
+    <?php isset($object["balconyPatio"]) ? include_once('object-view-partials/balkong-uteplats-bilplats.php') : null ?>
 
-    <h5>Energideklaration</h5>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Deklaration: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["energyDeclaration"]["completed"]) ? $object["energyDeclaration"]["completed"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
+    <?php isset($object["energyDeclaration"]["completed"]) && $object["energyDeclaration"]["completed"] != "" ? include_once('object-view-partials/energideklaration.php') : null ?>
 
-    <h5>Taxering</h5>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Preliminärt taxeringsvärde: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["assess"]["preliminaryAssessedValue"]) && $object["assess"]["preliminaryAssessedValue"] ? "Ja" : "Nej" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
+    <?php isset($object["assess"]["preliminaryAssessedValue"]) && $object["assess"]["preliminaryAssessedValue"] ? include_once('object-view-partials/taxering.php') : null ?>
 
-    <h5>Drift</h5>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Uppvärmning: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["operation"]["heating"]) ? number_format($object["operation"]["heating"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Väg/samfälligh.: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["operation"]["roadCommunity"]) ? number_format($object["operation"]["roadCommunity"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Försäkring: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["operation"]["insurance"]) ? number_format($object["operation"]["insurance"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Driftskostnader: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["operation"]["sum"]) ? number_format($object["operation"]["sum"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
+    <?php isset($object["operation"]) ? include_once('object-view-partials/driftkostnader.php') : null ?>
 
   </section>
 
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
 
-    <h5>Byggnad</h5>
-    <div class="row">
-      <div class="column">
-        <div class="space-between">
-          <p>Byggnadstyp: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["buildingType"]) ? $object["building"]["buildingType"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Byggår: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["buildingYear"]) ? $object["building"]["buildingYear"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="column">
-        <div class="space-between">
-          <p>Fasad: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["facade"]) ? $object["building"]["facade"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Stomme: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["frame"]) ? $object["building"]["frame"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="column">
-        <div class="space-between">
-          <p>Fönster: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["windows"]) ? $object["building"]["windows"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Bjälklag: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["beam"]) ? $object["building"]["beam"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="column">
-        <div class="space-between">
-          <p>Tak: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["roof"]) ? $object["building"]["roof"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Uppvärmning: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["building"]["heating"]) ? $object["building"]["heating"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="column">
-        <div class="space-between">
-          <p>Vatten och avlopp: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["waterAndDrain"]["info"]) ? $object["waterAndDrain"]["info"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <h5>Allmänt information</h5>
-    <div class="row">
-      <div class="column">
-        <div class="space-between" style="text-align: justify;">
-          <p>
-            <?php echo isset($object["description"]["generally"]) ? $object["description"]["generally"] : "Okänd" ?>
-          </p>
-        </div>
-      </div>
-    </div>
-    <h5>Övrigt</h5>
-    <div class="row">
-      <div class="column">
-        <div class="space-between" style="text-align: justify;">
-          <p>
-            <?php echo isset($object["building"]["otherAboutTheBuildning"]) ? $object["building"]["otherAboutTheBuildning"] : "Okänd" ?>
-          </p>
-        </div>
-      </div>
-    </div>
+    <?php isset($object["building"]) ? include_once('object-view-partials/byggnad.php') : null ?>
+    <?php isset($object["association"]) ? include_once('object-view-partials/föreningen.php') : null ?>
 
   </section>
 

@@ -133,7 +133,6 @@ class Property
 		$status = '
 			[{
 			  "name": "Till salu",
-			  "name": "Såld",
 			}]
 		';
 		$request = '{
@@ -210,6 +209,7 @@ class Property
 			$json = json_decode($result, true);
 			// Hantera valideringsfel, presenteras i $json
 			var_dump($json);
+			return $this->placeholder;
 		}
 
 
@@ -256,7 +256,7 @@ class Property
 	{
 		if ($id) {
 
-			$URL = "https://connect.maklare.vitec.net/Estate/GetHouse?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
+			$URL = "https://connect.maklare.vitec.net/Estate/GetHousingCooperative?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
 
 			return $this->fetch($URL);
 		} else {
@@ -268,7 +268,7 @@ class Property
 	{
 		if ($id) {
 
-			$URL = "https://connect.maklare.vitec.net/Estate/GetHouse?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
+			$URL = "https://connect.maklare.vitec.net/Estate/GetPlot?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
 
 			return $this->fetch($URL);
 		} else {
@@ -279,7 +279,7 @@ class Property
 	{
 		if ($id) {
 
-			$URL = "https://connect.maklare.vitec.net/Estate/GetHouse?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
+			$URL = "https://connect.maklare.vitec.net/Estate/GetProject?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
 
 			return $this->fetch($URL);
 		} else {
@@ -290,7 +290,7 @@ class Property
 	{
 		if ($id) {
 
-			$URL = "https://connect.maklare.vitec.net/Estate/GetHouse?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
+			$URL = "https://connect.maklare.vitec.net/Estate/GetFarm?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
 
 			return $this->fetch($URL);
 		} else {
@@ -301,7 +301,7 @@ class Property
 	{
 		if ($id) {
 
-			$URL = "https://connect.maklare.vitec.net/Estate/GetHouse?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
+			$URL = "https://connect.maklare.vitec.net/Estate/GetCondominium?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
 
 			return $this->fetch($URL);
 		} else {
@@ -313,7 +313,7 @@ class Property
 	{
 		if ($id) {
 
-			$URL = "https://connect.maklare.vitec.net/Estate/GetHouse?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
+			$URL = "https://connect.maklare.vitec.net/Estate/GetForeignProperty?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
 
 			return $this->fetch($URL);
 		} else {
@@ -326,7 +326,7 @@ class Property
 	{
 		if ($id) {
 
-			$URL = "https://connect.maklare.vitec.net/Estate/GetHouse?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
+			$URL = "https://connect.maklare.vitec.net/Estate/GetPremises?estateId=$id&customerId=$this->customer_id&onlyFutureViewings=False";
 
 			return $this->fetch($URL);
 		} else {
@@ -475,7 +475,26 @@ class Ctrl_Vitec_Integration_Public
 
 		// Check if object id is available in GET request.
 		if (isset($_GET['object_id'])) {
-			$object = $this->properties->getCottage($_GET['object_id']);
+			if (isset($_GET['object_type']) && $_GET['object_type'] == 'housingCooperative') {
+				$object = $this->properties->getHousingCooperative($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'house') {
+				$object = $this->properties->getHouse($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'cottage') {
+				$object = $this->properties->getCottage($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'condominium') {
+				$object = $this->properties->getCondominium($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'farm') {
+				$object = $this->properties->getFarm($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'foreignProperty') {
+				$object = $this->properties->getForeignProperty($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'plot') {
+				$object = $this->properties->getPlot($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'premise') {
+				$object = $this->properties->getPremise($_GET['object_id']);
+			} else if (isset($_GET['object_type']) && $_GET['object_type'] == 'project') {
+				$object = $this->properties->getProject($_GET['object_id']);
+			}
+
 			$agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
 
 			ob_start();
