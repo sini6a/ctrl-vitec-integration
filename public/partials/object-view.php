@@ -412,8 +412,9 @@
     ?>
 
   </section>
-
-  <a href="./" class="button">Visa alla objekt</a>
+  <div class="wp-block-button">
+    <a href="./" class="wp-block-button__link wp-element-button">Visa alla objekt</a>
+  </div>
 </div>
 </div>
 

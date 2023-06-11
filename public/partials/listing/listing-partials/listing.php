@@ -55,8 +55,12 @@
                 </div>
             </div>
 
-            <a class="button" href="<?php echo add_query_arg('object_id', $property['id'], get_permalink()) ?>">LÄS
-                MER</a>
+            <div class="wp-block-button">
+                <a class="wp-block-button__link wp-element-button"
+                    href="<?php echo add_query_arg('object_id', $property['id'], get_permalink()) ?>">LÄS
+                    MER</a>
+            </div>
+
 
         </section>
     </div>
