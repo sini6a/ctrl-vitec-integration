@@ -97,6 +97,7 @@ a {
 .wp-element-button,
 .wp-block-button__link {
   display: inline-block;
+  width: fit-content;
 }
 
 .fact {

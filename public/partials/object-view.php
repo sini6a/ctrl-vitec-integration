@@ -412,8 +412,9 @@
     ?>
 
   </section>
-  <div class="wp-block-button is-style-outline">
-    <a href="./" class="wp-block-button__link wp-element-button" style="border-radius: 1px;">Visa alla objekt</a>
+  <div class="wp-block-button is-style-outline" style=" width: fit-content !important;">
+    <a href="./" class="wp-block-button__link wp-element-button" style="border-radius: 1px;">Visa
+      alla objekt</a>
   </div>
 </div>
 </div>
