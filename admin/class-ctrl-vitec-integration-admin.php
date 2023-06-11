@@ -53,9 +53,9 @@ class Ctrl_Vitec_Integration_Admin
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		add_action( 'admin_init', array($this, 'ctrl_settings_init') );
-		add_action( 'admin_menu', array($this, 'ctrl_options_page') );
-		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts') );
+		add_action('admin_init', array($this, 'ctrl_settings_init'));
+		add_action('admin_menu', array($this, 'ctrl_options_page'));
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 
 	}
 
@@ -79,7 +79,7 @@ class Ctrl_Vitec_Integration_Admin
 		 * class.
 		 */
 
-		wp_enqueue_style( 'wp-color-picker');
+		wp_enqueue_style('wp-color-picker');
 		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/ctrl-vitec-integration-admin.css', array(), $this->version, 'all');
 
 	}
@@ -104,7 +104,7 @@ class Ctrl_Vitec_Integration_Admin
 		 * class.
 		 */
 
-		wp_enqueue_script( 'wp-color-picker');
+		wp_enqueue_script('wp-color-picker');
 		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/ctrl-vitec-integration-admin.js', array('jquery'), $this->version, false);
 	}
 
@@ -155,13 +155,20 @@ class Ctrl_Vitec_Integration_Admin
 
 		// Register a new section in the "ctrl" page.
 		add_settings_section(
-			'ctrl_section_developers',
+			'ctrl_api_section',
 			__('Vitec Integration Options', 'ctrl'),
-			array($this, 'ctrl_section_developers_callback'),
+			array($this, 'ctrl_api_section_callback'),
 			'ctrl'
 		);
 
-		// Register a new field in the "ctrl_section_developers" section, inside the "ctrl" page.
+		add_settings_section(
+			'ctrl_custom_section',
+			__('Custom Options', 'ctrl'),
+			array($this, 'ctrl_custom_section_callback'),
+			'ctrl'
+		);
+
+		// Register a new field in the "ctrl_api_section" section, inside the "ctrl" page.
 		add_settings_field(
 			'username_field',
 			// As of WP 4.6 this value is used only internally.
@@ -169,7 +176,7 @@ class Ctrl_Vitec_Integration_Admin
 			__('Vitec Username', 'ctrl'),
 			array($this, 'ctrl_field_username_cb'),
 			'ctrl',
-			'ctrl_section_developers',
+			'ctrl_api_section',
 			array(
 				'label_for' => 'ctrl_field_username',
 				'class' => 'ctrl_row',
@@ -183,9 +190,23 @@ class Ctrl_Vitec_Integration_Admin
 			__('Vitec Password', 'ctrl'),
 			array($this, 'ctrl_field_password_cb'),
 			'ctrl',
-			'ctrl_section_developers',
+			'ctrl_api_section',
 			array(
 				'label_for' => 'ctrl_field_password',
+				'class' => 'ctrl_row',
+				'ctrl_custom_data' => 'custom',
+			)
+		);
+		add_settings_field(
+			'customer_id_field',
+			// As of WP 4.6 this value is used only internally.
+			// Use $args' label_for to populate the id inside the callback.
+			__('Customer ID', 'ctrl'),
+			array($this, 'ctrl_field_customer_id_cb'),
+			'ctrl',
+			'ctrl_api_section',
+			array(
+				'label_for' => 'ctrl_field_customer_id',
 				'class' => 'ctrl_row',
 				'ctrl_custom_data' => 'custom',
 			)
@@ -197,10 +218,24 @@ class Ctrl_Vitec_Integration_Admin
 			__('Background Color', 'ctrl'),
 			array($this, 'ctrl_field_bgcolor_cb'),
 			'ctrl',
-			'ctrl_section_developers',
+			'ctrl_custom_section',
 			array(
 				'label_for' => 'ctrl_field_bgcolor',
 				'class' => 'ctrl_row',
+			)
+		);
+		add_settings_field(
+			'cf7-field',
+			// As of WP 4.6 this value is used only internally.
+			// Use $args' label_for to populate the id inside the callback.
+			__('Contact Form 7 ID', 'ctrl'),
+			array($this, 'ctrl_field_cf7_cb'),
+			'ctrl',
+			'ctrl_custom_section',
+			array(
+				'label_for' => 'ctrl_field_cf7',
+				'class' => 'ctrl_row',
+				'ctrl_custom_data' => 'custom',
 			)
 		);
 	}
@@ -211,10 +246,19 @@ class Ctrl_Vitec_Integration_Admin
 	 *
 	 * @param array $args  The settings array, defining title, id, callback.
 	 */
-	function ctrl_section_developers_callback($args)
+	function ctrl_api_section_callback($args)
 	{
 		?>
-		<p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Follow the white rabbit.', 'ctrl'); ?></p>
+		<p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Define API credentials and Customer ID.', 'ctrl'); ?><strong>
+				<?php esc_html_e('This section is required!', 'ctrl'); ?>
+			</strong></p>
+		<?php
+	}
+
+	function ctrl_custom_section_callback($args)
+	{
+		?>
+		<p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Define custom background color and Contact Form 7 ID to display in object details page.', 'ctrl'); ?></p>
 		<?php
 	}
 
@@ -233,8 +277,8 @@ class Ctrl_Vitec_Integration_Admin
 		// Get the value of the setting we've registered with register_setting()
 		$options = get_option('ctrl_options');
 		?>
-		<input
-			name="ctrl_options[<?php echo esc_attr( $args['label_for'] ); ?>]" placeholder="Your Vitec Username" type="text" value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
+		<input name="ctrl_options[<?php echo esc_attr($args['label_for']); ?>]" placeholder="Your Vitec Username" type="text"
+			value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
 		<?php
 	}
 	function ctrl_field_password_cb($args)
@@ -242,8 +286,8 @@ class Ctrl_Vitec_Integration_Admin
 		// Get the value of the setting we've registered with register_setting()
 		$options = get_option('ctrl_options');
 		?>
-		<input
-			name="ctrl_options[<?php echo esc_attr( $args['label_for'] ); ?>]" placeholder="Your Vitec Password" type="password" value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
+		<input name="ctrl_options[<?php echo esc_attr($args['label_for']); ?>]" placeholder="Your Vitec Password"
+			type="password" value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
 		<?php
 	}
 	function ctrl_field_bgcolor_cb($args)
@@ -251,8 +295,26 @@ class Ctrl_Vitec_Integration_Admin
 		// Get the value of the setting we've registered with register_setting()
 		$options = get_option('ctrl_options');
 		?>
-		<input
-			name="ctrl_options[<?php echo esc_attr( $args['label_for'] ); ?>]" placeholder="Background HEX Code" type="text" value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
+		<input name="ctrl_options[<?php echo esc_attr($args['label_for']); ?>]" placeholder="Background HEX Code" type="text"
+			value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
+		<?php
+	}
+	function ctrl_field_cf7_cb($args)
+	{
+		// Get the value of the setting we've registered with register_setting()
+		$options = get_option('ctrl_options');
+		?>
+		<input name="ctrl_options[<?php echo esc_attr($args['label_for']); ?>]" placeholder="ex. 44" type="text"
+			value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
+		<?php
+	}
+	function ctrl_field_customer_id_cb($args)
+	{
+		// Get the value of the setting we've registered with register_setting()
+		$options = get_option('ctrl_options');
+		?>
+		<input name="ctrl_options[<?php echo esc_attr($args['label_for']); ?>]" type="text"
+			value="<?php echo isset($options[$args['label_for']]) ? ($options[$args['label_for']]) : ''; ?>" />
 		<?php
 	}
 
@@ -302,7 +364,7 @@ class Ctrl_Vitec_Integration_Admin
 	 */
 	public function ctrl_options_page()
 	{
-		add_submenu_page( 'options-general.php', 'CTRL', 'Vitec Integration Options', 'manage_options', 'ctrl', array($this, 'ctrl_options_page_html') );
+		add_submenu_page('options-general.php', 'CTRL', 'Vitec Integration Options', 'manage_options', 'ctrl', array($this, 'ctrl_options_page_html'));
 	}
 
 

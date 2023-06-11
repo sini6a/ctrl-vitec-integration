@@ -10,24 +10,20 @@
  *
  * @package    Ctrl_Vitec_Integration
  * @subpackage Ctrl_Vitec_Integration/public/partials
+ * 
+ *
  */
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
-<h2 class="">Objekt till salu</h2>
-
-<?php foreach($this->objects as $object): ?>
-    <div class="listing">
-        <div class="listing-thumbnail">
-            <img src="<?php echo isset($object['thumbnail']) ? $object['thumbnail'] : plugin_dir_url( __FILE__ ) . '../images/ctrl-vitec-integration-placeholder.png' ?>" alt="Objekt">
-        </div>
-        <div class="listing-content">
-            <a href="<?php echo add_query_arg('object_id', $object['id'], get_permalink()) ?>"><h3 class="object-title"><?php echo isset($object['title']) ? $object['title'] : "Okänd" ?></h3></a>
-            <p>Stad: <?php echo isset($object['location']) ? $object['location'] : "Okänd" ?></p>
-            <p>Pris: <?php echo isset($object['price']) ? $object['price'] : "Okänd" ?></p>
-            <p>Beskrivning: <?php echo isset($object['description']) ? $object['description'] : null ?></p>
-        </div>
-    </div>
-    
-<?php endforeach; ?>
+<?php include_once('listing/houses.php'); ?>
+<?php include_once('listing/cottages.php'); ?>
+<?php include_once('listing/housingCooperativeses.php'); ?>
+<?php include_once('listing/plots.php'); ?>
+<?php include_once('listing/projects.php'); ?>
+<?php include_once('listing/farms.php'); ?>
+<?php include_once('listing/condominiums.php'); ?>
+<?php include_once('listing/foreignProperties.php'); ?>
+<?php include_once('listing/premises.php'); ?>
+<?php include_once('listing/no-listings-available.php'); ?>
