@@ -412,8 +412,8 @@
     ?>
 
   </section>
-  <div class="wp-block-button">
-    <a href="./" class="wp-block-button__link wp-element-button">Visa alla objekt</a>
+  <div class="wp-block-button is-style-outline">
+    <a href="./" class="wp-block-button__link wp-element-button" style="border-radius: 1px;">Visa alla objekt</a>
   </div>
 </div>
 </div>

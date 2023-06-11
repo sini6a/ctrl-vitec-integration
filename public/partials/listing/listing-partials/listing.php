@@ -55,10 +55,13 @@
                 </div>
             </div>
 
-            <div class="wp-block-button">
-                <a class="wp-block-button__link wp-element-button"
-                    href="<?php echo add_query_arg('object_id', $property['id'], get_permalink()) ?>">LÄS
-                    MER</a>
+            <br>
+            <div class="wp-block-buttons is-layout-flex">
+                <div class="wp-block-button is-style-outline">
+                    <a style="border-radius: 1px;" class="wp-block-button__link wp-element-button"
+                        href="<?php echo add_query_arg('object_id', $property['id'], get_permalink()) ?>">LÄS
+                        MER</a>
+                </div>
             </div>
 
 

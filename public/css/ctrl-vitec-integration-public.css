@@ -94,6 +94,11 @@ a {
   color: #fff;
 } */
 
+.wp-element-button,
+.wp-block-button__link {
+  display: inline-block;
+}
+
 .fact {
   padding: 25px;
   margin-bottom: 25px;
