@@ -27,10 +27,11 @@
             <p>Bilplats: </p>
             <p>
                 <strong>
-                    <?php echo isset($object["balconyPatio"]["parking"]) ? "Ja" : "Nej" ?>
+                    <?php echo isset($object["balconyPatio"]["parkingLot"]) ? "Ja" : "Nej" ?>
                 </strong>
             </p>
         </div>
     </div>
 </div>
 <?php isset($object["balconyPatio"]["summary"]) ? include_once('balkong-uteplats-bilplats-partials/beskrivning.php') : null ?>
+<?php isset($object["balconyPatio"]["parking"]) ? include_once('balkong-uteplats-bilplats-partials/parkering-beskrivning.php') : null ?>

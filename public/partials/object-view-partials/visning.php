@@ -17,7 +17,7 @@ $time_formatter = new IntlDateFormatter(
 
 ?>
 <div class="row">
-    <?php foreach ($object["viewings"] as $viewing): ?>
+    <?php foreach (array_reverse($object["viewings"]) as $viewing): ?>
         <div class="column" style="background-color: white; text-align: center;">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="25" height="35" style="padding-bottom: 10px;"
                 id="calendar">

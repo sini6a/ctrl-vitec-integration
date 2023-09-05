@@ -495,6 +495,7 @@ class Ctrl_Vitec_Integration_Public
 				$object = $this->properties->getProject($_GET['object_id']);
 			}
 
+			var_dump($object);
 			$agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
 
 			ob_start();

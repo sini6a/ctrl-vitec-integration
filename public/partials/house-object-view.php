@@ -1,23 +1,3 @@
-<?php
-
-/**
- * Provide a public-facing view for the plugin
- *
- * This file is used to markup the public-facing aspects of the plugin.
- *
- * @link       https://ctrl.mk
- * @since      1.0.0
- *
- * @package    Ctrl_Vitec_Integration
- * @subpackage Ctrl_Vitec_Integration/public/partials
- *        // <img src="<?php echo $this->properties->getImage($image['url'] . "&w=256&mode=crop") ?>" alt="">
-
- *       src="<?php echo isset($object['thumbnail']) ? $object['thumbnail'] : plugin_dir_url(__FILE__) . '../images/* *ctrl-vitec-integration-placeholder.png' ?>" />
- */
-?>
-
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
-
 <div class="property">
 
   <div class="property-image">

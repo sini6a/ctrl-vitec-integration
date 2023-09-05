@@ -315,11 +315,11 @@ a {
   }
 
   .fact .column {
-    flex: 1 1 25%;
+    flex: 1 1 48%;
   }
 
   .fact .row {
-    gap: 25px;
+    gap: 0 25px;
   }
 
   .viewing .row {
@@ -328,6 +328,7 @@ a {
 
   .viewing .column {
     flex: 1;
+    flex-basis: 25%;
   }
 
   .agent .column {

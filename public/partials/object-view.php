@@ -28,63 +28,22 @@
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
     <h3>Fakta om bostaden</h3>
     <div class="row">
-      <div class="column">
-        <div class="space-between">
-          <p>Boarea: </p>
-          <p><strong>
-              <?php echo isset($object['baseInformation']['livingSpace']) ? $object['baseInformation']['livingSpace'] . " m²" : "Okänd" ?>
-            </strong></p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Pris: </p>
-          <p><strong>
-              <?php echo isset($object["price"]["startingPrice"]) ? number_format($object["price"]["startingPrice"], 0, ',', ' ') . " kr" : "Okänd" ?>
-            </strong></p>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Antal Rum: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["interior"]["numberOfRooms"]) ? $object["interior"]["numberOfRooms"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-      <div class="column">
-        <div class="space-between">
-          <p>Antal Sovrum: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["interior"]["numberOfBedroom"]) ? $object["interior"]["numberOfBedroom"] : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
-    </div>
-    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <div class="column">
-        <div class="space-between">
-          <p>Driftskostnad: </p>
-          <p>
-            <strong>
-              <?php echo isset($object["operation"]["sum"]) ? number_format($object["operation"]["sum"], 0, ',', ' ') . " kr" : "Okänd" ?>
-            </strong>
-          </p>
-        </div>
-      </div>
+      <?php isset($object['baseInformation']['livingSpace']) ? include('object-view-partials/base-information/living-space.php') : null ?>
+      <?php isset($object["plot"]["area"]) ? include('object-view-partials/plot/area.php') : null ?>
+      <?php isset($object["interior"]["numberOfRooms"]) || isset($object["houseInterior"]["numberOfRooms"]) ? include('object-view-partials/interior-partials/antal-rum.php') : null ?>
+      <?php isset($object["interior"]["numberOfBedroom"]) || isset($object["houseInterior"]["numberOffBedroom"]) ? include('object-view-partials/interior-partials/antal-sovrum.php') : null ?>
+      <?php isset($object["baseInformation"]["propertyUnitDesignation"]) ? include('object-view-partials/base-information/designation.php') : null ?>
+      <?php isset($object["baseInformation"]["propertyType"]) ? include('object-view-partials/base-information/property-type.php') : null ?>
+      <?php isset($object["price"]["startingPrice"]) ? include('object-view-partials/price/starting-price.php') : null ?>
+      <?php isset($object["operation"]["sum"]) ? include('object-view-partials/operation/sum.php') : null ?>
+      <?php isset($object["baseInformation"]["monthlyFee"]) || isset($object["baseInformation"]["commentary"]) ? include('object-view-partials/base-information/monthly-fee.php') : null ?>
     </div>
   </section>
 
   <section class="description">
     <div class="row">
       <h2 class="center">
-        <?php echo isset($object['baseInformation']['objectAddress']['area']) ? $object['baseInformation']['objectAddress']['area'] : "Okänd" ?>
+        <?php echo isset($object['baseInformation']['objectAddress']['area']) ? $object['baseInformation']['objectAddress']['area'] : null ?>
       </h2>
       <div class="column">
         <p>
@@ -98,7 +57,7 @@
     <div class="row">
       <div class="column" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
         <h5 class="center">VISNING</h5>
-        <?php isset($object["viewings"]) ? include_once('object-view-partials/visning.php') : null ?>
+        <?php isset($object["viewings"]) ? include('object-view-partials/visning.php') : null ?>
       </div>
     </div>
   </section>
@@ -124,23 +83,28 @@
 
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
 
-    <?php isset($object["interior"]) ? include_once('object-view-partials/interiör.php') : null ?>
+    <h5>Interiör</h5>
+    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
+      <?php isset($object["interior"]["numberOfRooms"]) || isset($object["houseInterior"]["numberOfRooms"]) ? include('object-view-partials/interior-partials/antal-rum.php') : null ?>
+      <?php isset($object["interior"]["numberOfBedroom"]) || isset($object["houseInterior"]["numberOffBedroom"]) ? include('object-view-partials/interior-partials/antal-sovrum.php') : null ?>
+      <?php isset($object["interior"]["kitchenType"]) ? include('object-view-partials/interior-partials/kitchen-type.php') : null ?>
+    </div>
 
-    <?php isset($object["balconyPatio"]) ? include_once('object-view-partials/balkong-uteplats-bilplats.php') : null ?>
+    <?php $object['ventilation']['type'] != "" || $object['ventilation']['inspection'] != "" ? include_once('object-view-partials/ventilation.php') : null ?>
 
-    <?php isset($object["energyDeclaration"]["completed"]) && $object["energyDeclaration"]["completed"] != "" ? include_once('object-view-partials/energideklaration.php') : null ?>
+    <?php isset($object["energyDeclaration"]) ? include('object-view-partials/energideklaration.php') : null ?>
 
-    <?php isset($object["assess"]["preliminaryAssessedValue"]) && $object["assess"]["preliminaryAssessedValue"] ? include_once('object-view-partials/taxering.php') : null ?>
+    <?php isset($object["balconyPatio"]) ? include('object-view-partials/balkong-uteplats-bilplats.php') : null ?>
 
-    <?php isset($object["operation"]) ? include_once('object-view-partials/driftkostnader.php') : null ?>
+    <?php isset($object["assess"]["preliminaryAssessedValue"]) && $object["assess"]["preliminaryAssessedValue"] ? include('object-view-partials/taxering.php') : null ?>
+
+    <?php isset($object["operation"]) ? include('object-view-partials/driftkostnader.php') : null ?>
 
   </section>
 
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-
-    <?php isset($object["building"]) ? include_once('object-view-partials/byggnad.php') : null ?>
-    <?php isset($object["association"]) ? include_once('object-view-partials/föreningen.php') : null ?>
-
+    <?php isset($object["building"]) ? include('object-view-partials/byggnad.php') : null ?>
+    <?php isset($object["association"]) ? include('object-view-partials/föreningen.php') : null ?>
   </section>
 
   <section class="viewing">
@@ -181,7 +145,7 @@
 
     <?php
     if (isset(get_option('ctrl_options')['ctrl_field_cf7']) && !empty(get_option('ctrl_options')['ctrl_field_cf7'])) {
-      include_once('contact-form.php');
+      include('contact-form.php');
     }
     ?>
 
