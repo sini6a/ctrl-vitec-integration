@@ -134,12 +134,9 @@
     <h3 class="center">Bilder</h3>
     <div class="gallery-wrapper">
       <?php foreach ($object['images'] as $image => $value): ?>
-        <div class="single-image">
-          <a id="gallery-href-image-<?php echo $image ?>" href="">
-            <img id="gallery-image-<?php echo $image ?>"
-              src="<?php echo plugin_dir_url(dirname(__FILE__, 1)) . 'images/roller.svg' ?>" alt="">
-          </a>
-        </div>
+        <?php if ($value['showImageOnInternet']) {
+          include('image-partial.php');
+        } ?>
       <?php endforeach; ?>
     </div>
 
