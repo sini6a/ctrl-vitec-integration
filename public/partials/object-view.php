@@ -165,26 +165,41 @@
 
     $.post(my_ajax_obj.ajax_url, {
       action: "load_api_image",
-      image_id: "<?php echo $agent[0]['image']['imageId'] ?>"
+      image_id: "<?php echo $agent[0]['image']['imageId'] . '&w=400&h=400&quality=80&scale=canvas' ?>"
     }, function (data) {
       $("#agent-image").attr("src", data);
     });
 
-    var image_ids =
+    var image_thumbnails =
     {
       <?php foreach ($object['images'] as $image => $value) {
-        echo '"' . $image . '": "' . $value['imageId'] . '",';
+        echo '"' . $image . '": "' . $value['imageId'] . '&w=300&h=300&quality=80&scale=canvas",';
       } ?>
     };
 
-    $.each(image_ids, function (key, val) {
+    var high_quality_images =
+    {
+      <?php foreach ($object['images'] as $image => $value) {
+        echo '"' . $image . '": "' . $value['imageId'] . '&w=1000&h=1000&quality=80&scale=canvas",';
+      } ?>
+    };
+
+    $.each(image_thumbnails, function (key, val) {
       $.post(my_ajax_obj.ajax_url, {
         action: "load_api_image",
         image_id: val
       }, function (data) {
         $("#gallery-image-" + key).attr("src", data);
-        $("#gallery-href-image-" + key).attr("data-fslightbox", "gallery");
+      });
+    })
+
+    $.each(high_quality_images, function (key, val) {
+      $.post(my_ajax_obj.ajax_url, {
+        action: "load_api_image",
+        image_id: val
+      }, function (data) {
         $("#gallery-href-image-" + key).attr("href", data);
+        $("#gallery-href-image-" + key).attr("data-fslightbox", "gallery");
         refreshFsLightbox();
       });
     })
