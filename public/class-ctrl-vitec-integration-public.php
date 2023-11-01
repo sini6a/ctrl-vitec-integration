@@ -228,6 +228,7 @@ class Property
 		ob_end_clean();
 
 		return "data:image/jpeg;base64," . base64_encode($image_data);
+
 	}
 
 	function getHouse($id = null)
@@ -390,8 +391,11 @@ class Ctrl_Vitec_Integration_Public
 		add_action('wp_ajax_load_api_image', array($this, 'my_ajax_handler'));
 		add_action('wp_ajax_nopriv_load_api_image', array($this, 'my_ajax_handler'));
 
-
 		$this->errors = [];
+		// Create new object of class Property
+		$this->properties = new Property();
+		// Update available properties and store them in corresponding property type
+		$this->properties->updateProperties();
 
 	}
 
@@ -443,7 +447,7 @@ class Ctrl_Vitec_Integration_Public
 		wp_localize_script(
 			$this->plugin_name,
 			'my_ajax_obj',
-			array('ajax_url' => admin_url('admin-ajax.php'))
+			array('ajax_url' => admin_url('admin-ajax.php')),
 		);
 	}
 
@@ -454,8 +458,8 @@ class Ctrl_Vitec_Integration_Public
 	{
 		// Handle the ajax request here
 		$image_id = wp_unslash($_POST['image_id']);
-		$properties = new Property();
-		echo $properties->getImage($image_id . "&w=1280");
+		$id = wp_unslash($_POST['id']);
+		echo json_encode(array("id" => $id, "image" => $this->properties->getImage($image_id)));
 		wp_die(); // All ajax handlers die when finished
 	}
 
@@ -468,10 +472,6 @@ class Ctrl_Vitec_Integration_Public
 			include_once('partials/error.php');
 			return ob_get_clean();
 		}
-		// Create new object of class Property
-		$this->properties = new Property();
-		// Update available properties and store them in corresponding property type
-		$this->properties->updateProperties();
 
 		// Check if object id is available in GET request.
 		if (isset($_GET['object_id'])) {
@@ -495,7 +495,6 @@ class Ctrl_Vitec_Integration_Public
 				$object = $this->properties->getProject($_GET['object_id']);
 			}
 
-			var_dump($object);
 			$agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
 
 			ob_start();
