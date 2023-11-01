@@ -74,6 +74,8 @@ a {
 .property-image img {
   width: 100%;
   height: auto;
+  object-fit: none;
+  max-height: 500px;
 }
 
 /* .button {
@@ -267,16 +269,16 @@ a {
 .gallery-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0 10px;
 }
 
 .single-image {
   flex: 0 0 100%;
-
 }
 
 .single-image img {
   width: 100%;
+  object-fit: cover;
 }
 
 .contact {
