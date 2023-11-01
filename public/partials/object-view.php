@@ -20,6 +20,7 @@
 
 <div class="property">
 
+
   <div class="property-image">
     <img id="main-image" src="<?php echo plugin_dir_url(dirname(__FILE__, 1)) . 'images/roller.svg' ?>" />
 
@@ -130,8 +131,9 @@
     </div>
   </section>
 
-  <section class="gallery">
+  <section class="ctrl-gallery">
     <h3 class="center">Bilder</h3>
+    <p class="center" id="loading-text">Vänligen vänta. Laddar bilder.</p>
     <div class="gallery-wrapper">
       <?php foreach ($object['images'] as $image => $value): ?>
         <?php if ($value['showImageOnInternet']) {
@@ -155,57 +157,108 @@
 </div>
 
 <script>
+
   jQuery(document).ready(function ($) {
-    $.post(my_ajax_obj.ajax_url, {
-      action: "load_api_image",
-      image_id: "<?php echo $object['images'][0]['imageId'] ?>"
-    }, function (data) {
-      $("#main-image").attr("src", data);
-    });
+    var requestQueue = [];
+    var runningRequests = 0;
+    var maxConcurrentRequests = 5; // Adjust the maximum number of concurrent requests
 
-    $.post(my_ajax_obj.ajax_url, {
-      action: "load_api_image",
-      image_id: "<?php echo $agent[0]['image']['imageId'] . '&w=400&h=400&quality=80&scale=canvas' ?>"
-    }, function (data) {
-      $("#agent-image").attr("src", data);
-    });
+    function processQueue() {
+      if (requestQueue.length === 0 || runningRequests >= maxConcurrentRequests) {
+        $("#loading-text").hide();
+        return;
+      }
 
-    var image_thumbnails =
-    {
+      var request = requestQueue.shift();
+      runningRequests++;
+
+      var isLastItem = requestQueue.length === 0;
+
+      $.ajax({
+        type: 'POST',
+        url: request.url,
+        data: request.data,
+        dataType: 'json',
+        success: function (response) {
+          // Handle response
+          handleResponse(response, request.type);
+          runningRequests--;
+          processQueue(); // Process the next request
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          // Handle error
+          handleError();
+          runningRequests--;
+          processQueue(); // Process the next request
+        }
+      });
+    }
+
+    function handleResponse(response, type) {
+      if (type === 'main') {
+        $("#main-image").attr("src", response.image);
+      } else if (type === 'agent') {
+        $("#agent-image").attr("src", response.image);
+      } else if (type === 'thumbnail') {
+        $("#gallery-image-" + response.id).attr("src", response.image);
+      } else {
+        $("#loading-text").text("Vänligen vänta. Laddar bilder med hög upplösning.");
+        $("#gallery-href-image-" + response.id).attr("href", response.image);
+        $("#gallery-href-image-" + response.id).attr("data-fslightbox", "gallery");
+        refreshFsLightbox();
+      }
+    }
+
+    function handleError() {
+      console.log("There was a loading error. Please report it to the administrator!");
+    }
+
+    function addImageToQueue(id, imageId, type) {
+      requestQueue.push({
+        url: my_ajax_obj.ajax_url,
+        data: {
+          action: "load_api_image",
+          id: id,
+          image_id: imageId,
+        },
+        type: type
+      });
+
+      processQueue(); // Start processing the queue
+    }
+
+    var image_thumbnails = {
       <?php foreach ($object['images'] as $image => $value) {
-        echo '"' . $image . '": "' . $value['imageId'] . '&w=300&h=300&quality=80&scale=canvas",';
+        if ($value['showImageOnInternet']) {
+          echo '"' . $image . '": "' . $value['imageId'] . '&w=600&h=600&quality=90&mode=max",';
+        }
       } ?>
     };
 
-    var high_quality_images =
-    {
+    var high_quality_images = {
       <?php foreach ($object['images'] as $image => $value) {
-        echo '"' . $image . '": "' . $value['imageId'] . '&w=1000&h=1000&quality=80&scale=canvas",';
+        if ($value['showImageOnInternet']) {
+          echo '"' . $image . '": "' . $value['imageId'] . '&w=1000&h=1000&quality=80&mode=max",';
+        }
       } ?>
     };
+
+    // Get main image url and add to queue
+    $main_image_url = "<?php echo $object['images'][0]['imageId'] . '&w=800&h=800&quality=80&scale=canvas' ?>";
+    addImageToQueue(null, $main_image_url, 'main');
+
+    // Get agent image url and add to queue
+    $main_image_url = "<?php echo $agent[0]['image']['imageId'] . '&w=400&h=400&quality=80&mode=max' ?>";
+    addImageToQueue(null, $main_image_url, 'agent');
 
     $.each(image_thumbnails, function (key, val) {
-      $.post(my_ajax_obj.ajax_url, {
-        action: "load_api_image",
-        image_id: val
-      }, function (data) {
-        $("#gallery-image-" + key).attr("src", data);
-      });
-    })
-
+      addImageToQueue(key, val, 'thumbnail');
+    });
     $.each(high_quality_images, function (key, val) {
-      $.post(my_ajax_obj.ajax_url, {
-        action: "load_api_image",
-        image_id: val
-      }, function (data) {
-        $("#gallery-href-image-" + key).attr("href", data);
-        $("#gallery-href-image-" + key).attr("data-fslightbox", "gallery");
-        refreshFsLightbox();
-      });
-    })
-
-
+      addImageToQueue(key, val);
+    });
 
   });
+
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.4.1/index.min.js"></script>
