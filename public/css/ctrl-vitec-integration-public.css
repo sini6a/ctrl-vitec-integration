@@ -19,10 +19,18 @@ h5 {
   box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
   -webkit-box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
   -moz-box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
+  transition: all 250ms;
   margin-bottom: 20px;
   position: relative;
   width: 100%;
   height: 35vh;
+}
+
+.listing:hover {
+  box-shadow: 1px 1px 20px -4px rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 1px 1px 20px -4px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 1px 1px 20px -4px rgba(0, 0, 0, 0.7);
+  transform: scale(1.005);
 }
 
 .listing-content p {
@@ -38,6 +46,8 @@ h5 {
   height: 35vh;
   object-fit: cover;
 }
+
+.listing-thumbnail:hover {}
 
 .listing-content {
   position: absolute;
