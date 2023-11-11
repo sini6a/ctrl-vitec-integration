@@ -16,12 +16,44 @@ h5 {
 }
 
 .listing {
-  border: 1px dotted hsla(0, 0%, 33%, 0.616);
+  box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
+  -webkit-box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
   margin-bottom: 20px;
-  display: flex;
-  flex-wrap: wrap;
-
+  position: relative;
+  width: 100%;
+  height: 35vh;
 }
+
+.listing-content p {
+  margin-bottom: 0 !important;
+}
+
+.listing-content-heading {
+  font-size: x-large;
+}
+
+.listing-thumbnail {
+  width: 100%;
+  height: 35vh;
+  object-fit: cover;
+}
+
+.listing-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  /* Background color for text overlay */
+  color: #fff;
+  /* Text color */
+  padding: 10px;
+  /* Adjust the padding as needed */
+  width: 100%;
+  /* Make the text overlay span the full width */
+  box-sizing: border-box;
+}
+
 
 a {
   text-decoration: none;
@@ -30,29 +62,6 @@ a {
 .object-title {
   margin-bottom: 5px;
   margin-top: 5px;
-}
-
-.listing-thumbnail {
-  flex: 1 0 100%;
-}
-
-.listing-thumbnail img {
-  width: 100%;
-  object-fit: cover;
-  height: 100%;
-}
-
-.listing-content {
-  flex: 1;
-}
-
-.listing h2 {
-  margin-top: 0;
-}
-
-.listing p {
-  margin-bottom: 1em;
-  margin-top: 1em;
 }
 
 .property {
@@ -287,24 +296,6 @@ a {
 }
 
 @media (min-width: 768px) {
-  .listing {
-    position: relative;
-    justify-content: flex-end;
-  }
-
-  .listing-thumbnail {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 50%;
-    overflow: hidden;
-  }
-
-  .listing-content {
-    flex: 0 0 50%;
-  }
-
   .property-image {
     display: flex;
     justify-content: center;
