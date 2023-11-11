@@ -20,26 +20,6 @@
  * @subpackage Ctrl_Vitec_Integration/public
  * @author     CTRL <info@ctrl.mk>
  */
-class Cat
-{
-	public $fact;
-
-	public function __construct()
-	{
-
-		$request = "https://catfact.ninja/fact";
-		$response = file_get_contents($request);
-		$data = json_decode($response, true);
-		$this->fact = $data["fact"];
-
-	}
-
-	public function getFact()
-	{
-		return $this->fact;
-	}
-
-}
 
 class Property
 {
@@ -365,7 +345,6 @@ class Ctrl_Vitec_Integration_Public
 
 	private $errors;
 
-	private $cat;
 	private $properties;
 
 	/**
@@ -385,6 +364,9 @@ class Ctrl_Vitec_Integration_Public
 		$this->password = get_option('ctrl_options')['ctrl_field_password'];
 		$this->customer_id = get_option('ctrl_options')['ctrl_field_customer_id'];
 
+		add_action('init', function () {
+			add_rewrite_rule('([^/]*)/', 'index.php?page_id=224', 'top');
+		});
 		add_shortcode('vitec-integration-shortcode', array($this, 'ctrl_vitec_integration_shortcode'));
 		add_action('wp_enqueue_styles', array($this, 'enqueue_styles'));
 		add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
