@@ -41,7 +41,7 @@ class Property
 		$this->placeholder = plugin_dir_url(__FILE__) . 'images/ctrl-vitec-integration-placeholder.png';
 	}
 
-	function fetch($URL = "https://connect.maklare.vitec.net/Estate/GetEstateList", $request = null)
+	function fetch($URL = "https://connect.maklare.vitec.net/Estate/GetEstateList", $request = null, $post = false, $binary = false)
 	{
 		// Check if variables are not set do not execute the function and report to user
 		if ($this->username == null || $this->password == null || $this->customer_id == null) {
@@ -53,6 +53,18 @@ class Property
 
 		$ch = curl_init();
 
+		if ($post == true) {
+			curl_setopt($ch, CURLOPT_POST, true);
+		}
+		if ($binary == true) {
+			set_time_limit(0);
+			$fp = fopen(dirname(__FILE__) . '/localfile.tmp', 'w+');
+			curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 600);
+			curl_setopt($ch, CURLOPT_FILE, $fp);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+
+		}
 		curl_setopt($ch, CURLOPT_USERNAME, $this->username);
 		curl_setopt($ch, CURLOPT_PASSWORD, $this->password);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -79,6 +91,9 @@ class Property
 
 		$info = curl_getinfo($ch);
 		curl_close($ch);
+		if ($binary == true) {
+			fclose($fp);
+		}
 
 		$http_code = $info["http_code"];
 		if ($http_code == 401) {
@@ -98,7 +113,11 @@ class Property
 			// Hantera valideringsfel, presenteras i $json
 		}
 
-		return json_decode($result, true);
+		if ($binary == true) {
+			return '/public/localfile.tmp';
+		} else {
+			return json_decode($result, true);
+		}
 	}
 
 	function updateProperties($URL = "https://connect.maklare.vitec.net/Estate/GetEstateList")
@@ -112,7 +131,7 @@ class Property
 		}
 		$status = '
 			[{
-			  "name": "Till salu",
+			  "name": "Till Salu", "name": "Kommande",
 			}]
 		';
 		$request = '{
@@ -139,12 +158,94 @@ class Property
 
 	}
 
+	function getStatuses($URL = "https://connect.maklare.vitec.net/Estate/GetStatuses")
+	{
+		// Check if variables are not set do not execute the function and report to user
+		if ($this->username == null || $this->password == null || $this->customer_id == null) {
+			array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration settings!</strong></h5>');
+			ob_start();
+			include_once('partials/error.php');
+			return ob_get_clean();
+		}
+
+		$data = $this->fetch($URL);
+
+		var_dump($data);
+	}
+
 	function getAgent($id)
 	{
 
 		$URL = "https://connect.maklare.vitec.net/User/GetUser?UserId=$id&CustomerId=$this->customer_id";
 
 		return $this->fetch($URL);
+	}
+
+	function getFile($id, $extension = "pdf")
+	{
+
+		// Check if variables are not set do not execute the function and report to user
+		if ($this->username == null || $this->password == null || $this->customer_id == null) {
+			array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration settings!</strong></h5>');
+			ob_start();
+			include_once('partials/error.php');
+			return ob_get_clean();
+		}
+
+		$URL = "https://connect.maklare.vitec.net/File/GetFile?customerId=$this->customer_id&fileId=$id";
+
+		$filename = "doc-" . $id . "-" . rand(100000, 999999) . '.' . $extension;
+		$destination_path = dirname(__FILE__) . '/documents/' . $filename;
+		$fp = fopen($destination_path, "w+");
+
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_USERNAME, "$this->username");
+		curl_setopt($ch, CURLOPT_PASSWORD, "$this->password");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_URL, $URL);
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+
+		$result = curl_exec($ch);
+
+		if (curl_errno($ch)) {
+			die(curl_getinfo($ch));
+		}
+
+		$info = curl_getinfo($ch);
+		curl_close($ch);
+
+		$http_code = $info["http_code"];
+		if ($http_code == 401) {
+			// Användarnamnet eller lösenordet är felaktigt
+		}
+		if ($http_code == 403) {
+			// Begärt data som det saknas åtkomst till
+		}
+		if ($http_code == 500) {
+			// Oväntat fel, kontakta Vitec
+		}
+		if ($http_code == 400) {
+			$json = json_decode($result, true);
+			// Hantera valideringsfel, presenteras i $json
+		}
+
+		fclose($fp);
+
+		ob_start();
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename="' . $filename . '"');
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($destination_path));
+
+		ob_clean();
+		ob_end_flush();
+
+		return '/wp-content/plugins/ctrl-vitec-integration/public/documents/' . $filename;
 	}
 
 	function getImage($id = null)
@@ -372,6 +473,8 @@ class Ctrl_Vitec_Integration_Public
 		add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 		add_action('wp_ajax_load_api_image', array($this, 'my_ajax_handler'));
 		add_action('wp_ajax_nopriv_load_api_image', array($this, 'my_ajax_handler'));
+		add_action('wp_ajax_load_documents', array($this, 'download_documents'));
+		add_action('wp_ajax_nopriv_load_documents', array($this, 'download_documents'));
 
 		$this->errors = [];
 		// Create new object of class Property
@@ -443,6 +546,14 @@ class Ctrl_Vitec_Integration_Public
 		$id = wp_unslash($_POST['id']);
 		echo json_encode(array("id" => $id, "image" => $this->properties->getImage($image_id)));
 		wp_die(); // All ajax handlers die when finished
+	}
+
+	function download_documents()
+	{
+		$document_id = wp_unslash($_POST['document_id']);
+		$id = wp_unslash($_POST['id']);
+		echo json_encode(array("id" => $id, "path" => $this->properties->getFile($document_id)));
+		wp_die();
 	}
 
 	function ctrl_vitec_integration_shortcode($atts = [], $content = null)

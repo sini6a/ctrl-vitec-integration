@@ -23,29 +23,28 @@
 
   <div class="property-image">
     <img id="main-image" src="<?php echo plugin_dir_url(dirname(__FILE__, 1)) . 'images/roller.svg' ?>" />
-
   </div>
 
-  <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-    <h3>Fakta om bostaden</h3>
-    <div class="row">
-      <?php isset($object['baseInformation']['livingSpace']) ? include('object-view-partials/base-information/living-space.php') : null ?>
-      <?php isset($object["plot"]["area"]) ? include('object-view-partials/plot/area.php') : null ?>
-      <?php isset($object["interior"]["numberOfRooms"]) || isset($object["houseInterior"]["numberOfRooms"]) ? include('object-view-partials/interior-partials/antal-rum.php') : null ?>
-      <?php isset($object["interior"]["numberOfBedroom"]) || isset($object["houseInterior"]["numberOffBedroom"]) ? include('object-view-partials/interior-partials/antal-sovrum.php') : null ?>
-      <?php isset($object["baseInformation"]["propertyUnitDesignation"]) ? include('object-view-partials/base-information/designation.php') : null ?>
-      <?php isset($object["baseInformation"]["propertyType"]) ? include('object-view-partials/base-information/property-type.php') : null ?>
-      <?php isset($object["price"]["startingPrice"]) ? include('object-view-partials/price/starting-price.php') : null ?>
-      <?php isset($object["operation"]["sum"]) ? include('object-view-partials/operation/sum.php') : null ?>
-      <?php isset($object["baseInformation"]["monthlyFee"]) || isset($object["baseInformation"]["commentary"]) ? include('object-view-partials/base-information/monthly-fee.php') : null ?>
-    </div>
-  </section>
+  <div class="menu-under-image"
+    style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
+    <ul>
+      <li><a href="#description">BESKRIVNING</a></li>
+      <li><a href="#viewings">VISNING</a></li>
+      <li><a href="#facts">FAKTA</a></li>
+      <li><a href="#pictures">BILDER</a></li>
+      <li><a href="#documents">DOKUMENT OCH LÄNKAR</a></li>
+      <li><a href="#contact">ANMÄL INTRESSE</a></li>
+    </ul>
+  </div>
 
-  <section class="description">
+  <section class="description" id="description">
     <div class="row">
       <h2 class="center">
         <?php echo isset($object['baseInformation']['objectAddress']['area']) ? $object['baseInformation']['objectAddress']['area'] : null ?>
       </h2>
+      <h4 class="center">
+        <?php echo isset($object['description']['sellingHeading']) ? $object['description']['sellingHeading'] : null ?>
+      </h4>
       <div class="column">
         <p>
           <?php echo isset($object['description']['longSellingDescription']) ? $object['description']['longSellingDescription'] : null ?>
@@ -54,7 +53,7 @@
     </div>
   </section>
 
-  <section class="viewing">
+  <section class="viewing" id="viewings">
     <div class="row">
       <div class="column" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
         <h5 class="center">VISNING</h5>
@@ -81,6 +80,23 @@
       </div>
     </div>
   </section>
+
+  <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; "
+    id="facts">
+    <h3 style="text-align: center;">Fakta om bostaden</h3>
+    <div class="row">
+      <?php isset($object['baseInformation']['livingSpace']) ? include('object-view-partials/base-information/living-space.php') : null ?>
+      <?php isset($object["plot"]["area"]) ? include('object-view-partials/plot/area.php') : null ?>
+      <?php isset($object["interior"]["numberOfRooms"]) || isset($object["houseInterior"]["numberOfRooms"]) ? include('object-view-partials/interior-partials/antal-rum.php') : null ?>
+      <?php isset($object["interior"]["numberOfBedroom"]) || isset($object["houseInterior"]["numberOffBedroom"]) ? include('object-view-partials/interior-partials/antal-sovrum.php') : null ?>
+      <?php isset($object["baseInformation"]["propertyUnitDesignation"]) ? include('object-view-partials/base-information/designation.php') : null ?>
+      <?php isset($object["baseInformation"]["propertyType"]) ? include('object-view-partials/base-information/property-type.php') : null ?>
+      <?php isset($object["price"]["startingPrice"]) ? include('object-view-partials/price/starting-price.php') : null ?>
+      <?php isset($object["operation"]["sum"]) ? include('object-view-partials/operation/sum.php') : null ?>
+      <?php isset($object["baseInformation"]["monthlyFee"]) || isset($object["baseInformation"]["commentary"]) ? include('object-view-partials/base-information/monthly-fee.php') : null ?>
+    </div>
+  </section>
+
 
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
 
@@ -131,9 +147,8 @@
     </div>
   </section>
 
-  <section class="ctrl-gallery">
+  <section class="ctrl-gallery" id="pictures">
     <h3 class="center">Bilder</h3>
-    <p class="center" id="loading-text">Vänligen vänta. Laddar bilder.</p>
     <div class="gallery-wrapper">
       <?php foreach ($object['images'] as $image => $value): ?>
         <?php if ($value['showImageOnInternet']) {
@@ -141,14 +156,26 @@
         } ?>
       <?php endforeach; ?>
     </div>
-
-    <?php
-    if (isset(get_option('ctrl_options')['ctrl_field_cf7']) && !empty(get_option('ctrl_options')['ctrl_field_cf7'])) {
-      include('contact-form.php');
-    }
-    ?>
-
   </section>
+
+  <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; "
+    id="documents">
+    <h3 style="text-align:center;">Dokument och länkar</h3>
+    <div class="row">
+      <?php if (!empty($object['advertiseOn']['documents'])): ?>
+        <?php foreach ($object['advertiseOn']['documents'] as $document => $value): ?>
+          <?php include('object-view-partials/document-partial.php'); ?>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
+  </section>
+
+  <?php
+  if (isset(get_option('ctrl_options')['ctrl_field_cf7']) && !empty(get_option('ctrl_options')['ctrl_field_cf7'])) {
+    include('contact-form.php');
+  }
+  ?>
+
   <div class="wp-block-button is-style-outline" style=" width: fit-content !important;">
     <a href="./" class="wp-block-button__link wp-element-button" style="border-radius: 1px;">Visa
       alla objekt</a>
@@ -160,12 +187,12 @@
 
   jQuery(document).ready(function ($) {
     var requestQueue = [];
+    var loadingText = $("#loading-text");
     var runningRequests = 0;
     var maxConcurrentRequests = 5; // Adjust the maximum number of concurrent requests
 
     function processQueue() {
       if (requestQueue.length === 0 || runningRequests >= maxConcurrentRequests) {
-        $("#loading-text").hide();
         return;
       }
 
@@ -201,11 +228,17 @@
         $("#agent-image").attr("src", response.image);
       } else if (type === 'thumbnail') {
         $("#gallery-image-" + response.id).attr("src", response.image);
+      } else if (type === 'document') {
+        $("#document-" + response.id).attr("href", response.path);
       } else {
+        if (response.id == 0) {
+          $("#main-image").attr("src", response.image);
+        }
         $("#loading-text").text("Vänligen vänta. Laddar bilder med hög upplösning.");
+        $("#gallery-image-" + response.id).attr("src", response.image);
         $("#gallery-href-image-" + response.id).attr("href", response.image);
         $("#gallery-href-image-" + response.id).attr("data-fslightbox", "gallery");
-        refreshFsLightbox();
+        //refreshFsLightbox();
       }
     }
 
@@ -227,6 +260,20 @@
       processQueue(); // Start processing the queue
     }
 
+    function addDocumentToQueue(id, documentId, type) {
+      requestQueue.push({
+        url: my_ajax_obj.ajax_url,
+        data: {
+          action: "load_documents",
+          id: id,
+          document_id: documentId,
+        },
+        type: type
+      });
+
+      processQueue(); // Start processing the queue
+    }
+
     var image_thumbnails = {
       <?php foreach ($object['images'] as $image => $value) {
         if ($value['showImageOnInternet']) {
@@ -238,13 +285,19 @@
     var high_quality_images = {
       <?php foreach ($object['images'] as $image => $value) {
         if ($value['showImageOnInternet']) {
-          echo '"' . $image . '": "' . $value['imageId'] . '&w=1000&h=1000&quality=80&mode=max",';
+          echo '"' . $image . '": "' . $value['imageId'] . '",';
         }
       } ?>
     };
 
+    var documents = {
+      <?php foreach ($object['advertiseOn']['documents'] as $doc => $value) {
+        echo '"' . $doc . '": "' . $value['id'] . '",';
+      } ?>
+    };
+
     // Get main image url and add to queue
-    $main_image_url = "<?php echo $object['images'][0]['imageId'] . '&w=800&h=800&quality=80&scale=canvas' ?>";
+    $main_image_url = "<?php echo $object['images'][0]['imageId'] . '&w=1200&h=1200&quality=90&mode=max' ?>";
     addImageToQueue(null, $main_image_url, 'main');
 
     // Get agent image url and add to queue
@@ -256,6 +309,10 @@
     });
     $.each(high_quality_images, function (key, val) {
       addImageToQueue(key, val);
+    });
+
+    $.each(documents, function (key, val) {
+      addDocumentToQueue(key, val, 'document');
     });
 
   });

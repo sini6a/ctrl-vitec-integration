@@ -15,6 +15,19 @@ h5 {
   text-align: center;
 }
 
+.ctrl-gallery {
+  margin: 0 0 25px 0;
+}
+
+#documents a {
+  text-decoration: none;
+  color: black;
+}
+
+#loading-text {
+  text-align: center;
+}
+
 .listing {
   box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
   -webkit-box-shadow: 1px 1px 15px -7px rgba(0, 0, 0, 0.7);
@@ -24,6 +37,49 @@ h5 {
   position: relative;
   width: 100%;
   height: 35vh;
+  min-height: 300px;
+}
+
+.menu-under-image {
+  box-shadow: 0 2px 3px -2px gray;
+  -webkit-box-shadow: 0 2px 3px -2px gray;
+  -moz-box-shadow: 0 2px 3px -2px gray;
+  text-align: center;
+  list-style-type: none;
+}
+
+.menu-under-image ul {
+  margin: 0 !important;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  overflow: auto;
+  align-items: center;
+}
+
+.document-icon {
+  max-width: 18px;
+}
+
+.menu-under-image li {
+  padding: 15px;
+  list-style: none;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.menu-under-image li a {
+  color: #000;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+#description,
+#viewings,
+#facts,
+#pictures,
+#contact {
+  scroll-margin-top: 100px;
 }
 
 .listing:hover {
@@ -44,6 +100,7 @@ h5 {
 .listing-thumbnail {
   width: 100%;
   height: 35vh;
+  min-height: 300px;
   object-fit: cover;
 }
 
@@ -93,8 +150,6 @@ a {
 .property-image img {
   width: 100%;
   height: auto;
-  object-fit: none;
-  max-height: 500px;
 }
 
 /* .button {
@@ -305,7 +360,26 @@ a {
   margin: 25px 0 25px 0;
 }
 
+.notify-badge {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  color: white;
+  padding: 5px 10px;
+  font-size: 20px;
+}
+
 @media (min-width: 768px) {
+  .menu-under-image ul {
+    margin: 0 !important;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
   .property-image {
     display: flex;
     justify-content: center;
@@ -315,6 +389,14 @@ a {
   .property-image img {
     object-fit: cover;
     width: 100%;
+  }
+
+  .listing {
+    height: 70vh;
+  }
+
+  .listing-thumbnail {
+    height: 70vh;
   }
 
   .fact .column {
@@ -359,7 +441,7 @@ a {
   }
 
   .single-image {
-    flex: 0 0 calc(25% - 7.5px);
+    flex: 0 0 100%;
   }
 
   .single-image {
@@ -369,9 +451,6 @@ a {
   }
 
   .single-image img {
-    object-fit: cover;
-    height: 20vw;
-    max-height: 200px;
     width: 100%;
   }
 }

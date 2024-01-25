@@ -4,8 +4,11 @@
             href="<?php echo add_query_arg(array('object_id' => $property['id'], 'object_type' => 'housingCooperative'), get_permalink()) ?>">
             <div class="listing">
 
-                <img class="listing-thumbnail"
-                    src="<?php echo $this->properties->getImage($property['mainImage']['imageId'] . "&w=1000") ?>" />
+                <?php if ($property['status']['name'] == "Kommande")
+                    echo '<span class="notify-badge">KOMMANDE OBJEKT</span>' ?>
+                    <img class="listing-thumbnail"
+                        src="<?php echo $this->properties->getImage($property['mainImage']['imageId'] . "") ?>" />
+
 
                 <div class="listing-content">
                     <p class="listing-content-heading">

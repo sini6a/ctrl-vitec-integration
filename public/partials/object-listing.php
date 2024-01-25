@@ -17,6 +17,7 @@
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
 
+
 <?php include_once('listing/houses.php'); ?>
 <?php include_once('listing/cottages.php'); ?>
 <?php include_once('listing/housingCooperativeses.php'); ?>

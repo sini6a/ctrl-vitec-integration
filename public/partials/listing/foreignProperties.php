@@ -1,75 +1,28 @@
 <?php if ($this->properties->getForeignProperty() != null) {
     foreach ($this->properties->getForeignProperty() as $property): ?>
-        <div class="listing">
+        <a
+            href="<?php echo add_query_arg(array('object_id' => $property['id'], 'object_type' => 'foreignProperty'), get_permalink()) ?>">
+            <div class="listing">
 
-            <div class="listing-thumbnail">
-                <img src="<?php echo $this->properties->getImage($property['mainImage']['imageId'] . "&w=500&mode=crop") ?>" />
-            </div>
+                <?php if ($property['status']['name'] == "Kommande")
+                    echo '<span class="notify-badge">KOMMANDE OBJEKT</span>' ?>
+                    <img class="listing-thumbnail"
+                        src="<?php echo $this->properties->getImage($property['mainImage']['imageId'] . "") ?>" />
 
-            <div class="listing-content"
-                style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-                <section class="fact" style="margin-bottom: 0 !important;">
-                    <h3 class="center">
+
+                <div class="listing-content">
+                    <p class="listing-content-heading">
                         <?php echo isset($property['areaName']) ? $property['areaName'] : "Okänd" ?>
-                    </h3>
-                    <div class="row">
-                        <div class="column">
-                            <div class="space-between">
-                                <p>Boarea: </p>
-                                <p><strong>
-                                        <?php echo isset($property['livingSpace']) ? $property['livingSpace'] . " m²" : "Okänd" ?>
-                                    </strong></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="column">
-                            <div class="space-between">
-                                <p>Pris: </p>
-                                <p><strong>
-                                        <?php echo isset($property['price']) ? number_format($property['price'], 0, ',', ' ') . " kr" : "Okänd" ?>
-                                    </strong></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-                        <div class="column">
-                            <div class="space-between">
-                                <p>Antal Rum: </p>
-                                <p>
-                                    <strong>
-                                        <?php echo isset($property["rooms"]) ? $property["rooms"] : "Okänd" ?>
-                                    </strong>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="column">
-                            <div class="space-between">
-                                <p>Objektnummer: </p>
-                                <p>
-                                    <strong>
-                                        <?php echo isset($property["objectNumber"]) ? $property["objectNumber"] : "Okänd" ?>
-                                    </strong>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br>
-                    <div class="wp-block-buttons is-layout-flex">
-                        <div class="wp-block-button is-style-outline">
-                            <a style="border-radius: 1px;" class="wp-block-button__link wp-element-button"
-                                href="<?php echo add_query_arg(array('object_id' => $property['id'], 'object_type' => 'foreignProperty'), get_permalink()) ?>">LÄS
-                                MER</a>
-                        </div>
-                    </div>
-
-
-                </section>
+                    </p>
+                    <p>
+                        <?php echo isset($property['livingSpace']) ? $property['livingSpace'] . " m²" : "Okänd" ?> -
+                        <?php echo isset($property['price']) ? number_format($property['price'], 0, ',', ' ') . " kr" : "Okänd" ?>
+                        -
+                        <?php echo isset($property["rooms"]) ? $property["rooms"] : "Okänd" ?> rum
+                    </p>
+                </div>
             </div>
-        </div>
+        </a>
 
         <script>
             jQuery(document).ready(function ($) {
