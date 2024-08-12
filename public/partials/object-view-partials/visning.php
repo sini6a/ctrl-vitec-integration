@@ -20,13 +20,13 @@ $count = 0;
 
 ?>
 <div class="row">
-    <?php foreach (array_reverse($object["viewings"]) as $viewing): ?>
+    <?php foreach ($object["viewings"] as $viewing): ?>
         <?php if (strtotime($viewing["startTime"]) > $currentdate) {
             include('visning-partial.php');
             $count++;
         } ?>
     <?php endforeach; ?>
     <?php if ($count == 0) {
-        echo '<p style="text-align: center; width: 100%;">Inga visningar just nu!</p>';
+        echo '<p style="text-align: center; width: 100%;">Kontakta mäklaren</p>';
     } ?>
 </div>

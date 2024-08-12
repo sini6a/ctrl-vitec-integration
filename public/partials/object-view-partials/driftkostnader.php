@@ -4,6 +4,8 @@
     <?php isset($object["operation"]["roadCommunity"]) && $object["operation"]["roadCommunity"] != 0 ? include_once('drift-partials/vägochsamfälligh.php') : null ?>
     <?php isset($object["operation"]["insurance"]) && $object["operation"]["insurance"] != 0 ? include_once('drift-partials/försäkring.php') : null ?>
     <?php isset($object["operation"]["electricity"]) && $object["operation"]["electricity"] != 0 ? include_once('drift-partials/el.php') : null ?>
+    <?php isset($object["operation"]["waterAndDrain"]) && $object["operation"]["waterAndDrain"] != 0 ? include_once('drift-partials/water-and-drain.php') : null ?>
+    <?php isset($object["operation"]["sanitation"]) && $object["operation"]["sanitation"] != 0 ? include_once('drift-partials/sanitation.php') : null ?>
     <?php isset($object["operation"]["personsInTheHousehold"]) && $object["operation"]["personsInTheHousehold"] != 0 ? include_once('drift-partials/hushåll.php') : null ?>
     <?php isset($object["operation"]["sum"]) && $object["operation"]["sum"] != 0 ? include_once('drift-partials/driftkostnader.php') : null ?>
 </div>

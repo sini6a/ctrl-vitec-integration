@@ -12,7 +12,7 @@ h5 {
 }
 
 .center {
-  text-align: center;
+  text-align: center !important;
 }
 
 .ctrl-gallery {
@@ -97,11 +97,22 @@ h5 {
   font-size: x-large;
 }
 
+.no-effect {
+  filter: blur(0px) !important;
+  transition: 0.25s;
+}
+
+.preformatted-p {
+  white-space: pre-line;
+}
+
 .listing-thumbnail {
   width: 100%;
   height: 35vh;
   min-height: 300px;
   object-fit: cover;
+  filter: blur(10px);
+  transition: 0.25s;
 }
 
 .listing-thumbnail:hover {}
@@ -182,7 +193,8 @@ a {
 }
 
 .fact h5 {
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
+
 }
 
 .fact h5:not(:first-child) {
@@ -208,6 +220,30 @@ a {
 
 .description {
   padding: 50px 0 25px 0;
+}
+
+.bidding .row {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  overflow: auto;
+  align-items: center;
+  gap: 25px;
+}
+
+.bidding .column {
+  display: flex;
+  flex: 1 0 33%;
+  justify-content: center;
+  text-align: center;
+}
+
+.bidding .column .space-between {
+  width: 100%;
+}
+
+.bidding .column h4 {
+  margin-bottom: 10px;
 }
 
 .viewing .row {
@@ -346,13 +382,27 @@ a {
   gap: 0 10px;
 }
 
+.image-container {
+  width: 100%;
+}
+
 .single-image {
   flex: 0 0 100%;
+  flex-direction: column;
+
 }
 
 .single-image img {
   width: 100%;
+  height: 100%;
   object-fit: cover;
+}
+
+.single-image-text {
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+  margin-top: 0 !important;
 }
 
 .contact {
@@ -368,7 +418,42 @@ a {
   text-align: center;
   color: white;
   padding: 5px 10px;
-  font-size: 20px;
+  z-index: 9;
+}
+
+.notify-bidding {
+  background: rgba(0, 55, 255, 0.5) !important;
+}
+
+.dot {
+  position: absolute;
+  left: -12.5%;
+  top: 15%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background-color: #00477f;
+  /* Adjust the color as needed */
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+  /* Adjust the animation duration as needed */
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
 }
 
 @media (min-width: 768px) {
@@ -452,5 +537,11 @@ a {
 
   .single-image img {
     width: 100%;
+  }
+
+  .bidding .row {}
+
+  .bidding .column {
+    flex: 1 0 25%;
   }
 }

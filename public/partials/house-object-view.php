@@ -326,10 +326,10 @@
       </div>
     </div>
 
-    <h5>Allmänt information</h5>
+    <h5>Allmän information</h5>
     <div class="row">
       <div class="column">
-        <div class="space-between" style="text-align: justify;">
+        <div class="space-between" style="text-align: justify; white-space: pre-line;">
           <p>
             <?php echo isset($object["description"]["generally"]) ? $object["description"]["generally"] : "Okänd" ?>
           </p>
@@ -387,7 +387,7 @@
 
     <?php
     if (isset(get_option('ctrl_options')['ctrl_field_cf7']) && !empty(get_option('ctrl_options')['ctrl_field_cf7'])) {
-      include_once('contact-form.php');
+      include_once ('contact-form.php');
     }
     ?>
 

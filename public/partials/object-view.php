@@ -37,17 +37,31 @@
     </ul>
   </div>
 
+  <?php if (isset($object["bids"]) && !empty($object["bids"])): ?>
+    <section class="bidding" id="biddings"
+      style="padding-top: 25px; background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
+      <div class="row" style="justify-content: center;">
+
+        <h5 class="center" style="position: relative;">BUDGIVNING PÅGÅR <span class="dot"></span></h5>
+      </div>
+      <div class="row">
+        <?php include ('object-view-partials/bids.php') ?>
+      </div>
+    </section>
+  <?php endif; ?>
+
   <section class="description" id="description">
     <div class="row">
       <h2 class="center">
         <?php echo isset($object['baseInformation']['objectAddress']['area']) ? $object['baseInformation']['objectAddress']['area'] : null ?>
+        <?php echo isset($object['plotBaseInformation']['objectAddress']['area']) ? $object['plotBaseInformation']['objectAddress']['area'] : null ?>
       </h2>
       <h4 class="center">
-        <?php echo isset($object['description']['sellingHeading']) ? $object['description']['sellingHeading'] : null ?>
+        <?php echo isset($object['description']['sellingHeading']) && !empty($object['description']['sellingHeading']) ? $object['description']['sellingHeading'] : $object['baseInformation']['objectAddress']['streetAddress'] ?>
       </h4>
       <div class="column">
-        <p>
-          <?php echo isset($object['description']['longSellingDescription']) ? $object['description']['longSellingDescription'] : null ?>
+        <p class="preformatted-p">
+          <?php echo isset($object['description']['longSellingDescription']) ? trim($object['description']['longSellingDescription']) : null ?>
         </p>
       </div>
     </div>
@@ -57,7 +71,7 @@
     <div class="row">
       <div class="column" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
         <h5 class="center">VISNING</h5>
-        <?php isset($object["viewings"]) ? include('object-view-partials/visning.php') : null ?>
+        <?php isset($object["viewings"]) ? include ('object-view-partials/visning.php') : null ?>
       </div>
     </div>
   </section>
@@ -85,43 +99,55 @@
     id="facts">
     <h3 style="text-align: center;">Fakta om bostaden</h3>
     <div class="row">
-      <?php isset($object['baseInformation']['livingSpace']) ? include('object-view-partials/base-information/living-space.php') : null ?>
-      <?php isset($object["plot"]["area"]) ? include('object-view-partials/plot/area.php') : null ?>
-      <?php isset($object["interior"]["numberOfRooms"]) || isset($object["houseInterior"]["numberOfRooms"]) ? include('object-view-partials/interior-partials/antal-rum.php') : null ?>
-      <?php isset($object["interior"]["numberOfBedroom"]) || isset($object["houseInterior"]["numberOffBedroom"]) ? include('object-view-partials/interior-partials/antal-sovrum.php') : null ?>
-      <?php isset($object["baseInformation"]["propertyUnitDesignation"]) ? include('object-view-partials/base-information/designation.php') : null ?>
-      <?php isset($object["baseInformation"]["propertyType"]) ? include('object-view-partials/base-information/property-type.php') : null ?>
-      <?php isset($object["price"]["startingPrice"]) ? include('object-view-partials/price/starting-price.php') : null ?>
-      <?php isset($object["operation"]["sum"]) ? include('object-view-partials/operation/sum.php') : null ?>
-      <?php isset($object["baseInformation"]["monthlyFee"]) || isset($object["baseInformation"]["commentary"]) ? include('object-view-partials/base-information/monthly-fee.php') : null ?>
+      <?php isset($object['baseInformation']['livingSpace']) ? include ('object-view-partials/base-information/living-space.php') : null ?>
+      <?php isset($object['baseInformation']['otherSpace']) && $object['baseInformation']['otherSpace'] != '0' ? include ('object-view-partials/base-information/other-space.php') : null ?>
+      <?php isset($object["plot"]["area"]) ? include ('object-view-partials/plot/area.php') : null ?>
+      <?php isset($object["baseInformation"]["propertyUnitDesignation"]) ? include ('object-view-partials/base-information/designation.php') : null ?>
+      <?php isset($object["plotBaseInformation"]["propertyUnitDesignation"]) ? include ('object-view-partials/plot/base-information/unitDesignation.php') : null ?>
+      <?php isset($object["baseInformation"]["propertyType"]) ? include ('object-view-partials/base-information/property-type.php') : null ?>
+      <?php isset($object["price"]["startingPrice"]) ? include ('object-view-partials/price/starting-price.php') : null ?>
+      <?php isset($object["operation"]["sum"]) ? include ('object-view-partials/operation/sum.php') : null ?>
+      <?php isset($object["baseInformation"]["monthlyFee"]) || isset($object["baseInformation"]["commentary"]) ? include ('object-view-partials/base-information/monthly-fee.php') : null ?>
+      <?php isset($object["baseInformation"]["areaSource"]) && $object["baseInformation"]["areaSource"] != "" ? include ('object-view-partials/base-information/object-address/area-source.php') : null ?>
     </div>
   </section>
 
 
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
 
-    <h5>Interiör</h5>
+    <h5>Adressuppgifter</h5>
     <div class="row" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-      <?php isset($object["interior"]["numberOfRooms"]) || isset($object["houseInterior"]["numberOfRooms"]) ? include('object-view-partials/interior-partials/antal-rum.php') : null ?>
-      <?php isset($object["interior"]["numberOfBedroom"]) || isset($object["houseInterior"]["numberOffBedroom"]) ? include('object-view-partials/interior-partials/antal-sovrum.php') : null ?>
-      <?php isset($object["interior"]["kitchenType"]) ? include('object-view-partials/interior-partials/kitchen-type.php') : null ?>
+      <?php isset($object["baseInformation"]["objectAddress"]["county"]) ? include ('object-view-partials/base-information/object-address/county.php') : null ?>
+      <?php isset($object["plotBaseInformation"]["objectAddress"]["county"]) ? include ('object-view-partials/plot/base-information/object-address/county.php') : null ?>
+      <?php isset($object["baseInformation"]["objectAddress"]["municipality"]) ? include ('object-view-partials/base-information/object-address/municipality.php') : null ?>
+      <?php isset($object["plotBaseInformation"]["objectAddress"]["municipality"]) ? include ('object-view-partials/plot/base-information/object-address/municipality.php') : null ?>
+      <?php isset($object["baseInformation"]["objectAddress"]["zipCode"]) ? include ('object-view-partials/base-information/object-address/zipcode.php') : null ?>
+      <?php isset($object["plotBaseInformation"]["objectAddress"]["zipCode"]) ? include ('object-view-partials/plot/base-information/object-address/zipcode.php') : null ?>
+      <?php isset($object["baseInformation"]["objectAddress"]["streetAddress"]) ? include ('object-view-partials/base-information/object-address/address.php') : null ?>
+      <?php isset($object["plotBaseInformation"]["objectAddress"]["streetAddress"]) ? include ('object-view-partials/plot/base-information/object-address/address.php') : null ?>
     </div>
-
-    <?php $object['ventilation']['type'] != "" || $object['ventilation']['inspection'] != "" ? include_once('object-view-partials/ventilation.php') : null ?>
-
-    <?php isset($object["energyDeclaration"]) ? include('object-view-partials/energideklaration.php') : null ?>
-
-    <?php isset($object["balconyPatio"]) ? include('object-view-partials/balkong-uteplats-bilplats.php') : null ?>
-
-    <?php isset($object["assess"]["preliminaryAssessedValue"]) && $object["assess"]["preliminaryAssessedValue"] ? include('object-view-partials/taxering.php') : null ?>
-
-    <?php isset($object["operation"]) ? include('object-view-partials/driftkostnader.php') : null ?>
 
   </section>
 
+
   <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
-    <?php isset($object["building"]) ? include('object-view-partials/byggnad.php') : null ?>
-    <?php isset($object["association"]) ? include('object-view-partials/föreningen.php') : null ?>
+    <?php isset($object["interior"]["numberOfRooms"]) || isset($object["houseInterior"]["numberOfRooms"]) || isset($object["interior"]["numberOfBedroom"]) || isset($object["houseInterior"]["numberOffBedroom"]) || isset($object["interior"]["kitchenType"]) ? include_once ('object-view-partials/interior-partials/interior.php') : null ?>
+    <?php isset($object['ventilation']['type']) && $object['ventilation']['type'] != "" || isset($object['ventilation']['inspection']) && $object['ventilation']['inspection'] != "" ? include_once ('object-view-partials/ventilation.php') : null ?>
+    <?php isset($object["energyDeclaration"]) ? include ('object-view-partials/energideklaration.php') : null ?>
+    <?php isset($object["balconyPatio"]) ? include ('object-view-partials/balkong-uteplats-bilplats.php') : null ?>
+    <?php isset($object["operation"]["heating"]) && $object["operation"]["heating"] != 0 || isset($object["operation"]["roadCommunity"]) && $object["operation"]["roadCommunity"] != 0 || isset($object["operation"]["insurance"]) && $object["operation"]["insurance"] != 0 || isset($object["operation"]["electricity"]) && $object["operation"]["electricity"] != 0 || isset($object["operation"]["waterAndDrain"]) && $object["operation"]["waterAndDrain"] != 0 || isset($object["operation"]["sanitation"]) && $object["operation"]["sanitation"] != 0 || isset($object["operation"]["personsInTheHousehold"]) && $object["operation"]["personsInTheHousehold"] != 0 || isset($object["operation"]["sum"]) && $object["operation"]["sum"] != 0 ? include ('object-view-partials/driftkostnader.php') : null ?>
+    <?php isset($object['ventilation']['type']) && $object['ventilation']['type'] != "" || isset($object['ventilation']['inspection']) && $object['ventilation']['inspection'] != "" ? include_once ('object-view-partials/ventilation.php') : null ?>
+    <?php isset($object["assess"]["preliminaryAssessedValue"]) || isset($object["assess"]["typeCode"]) || isset($object["assess"]["taxFee"]) || isset($object["assess"]["totalAssessedValue"]) ? include_once ('object-view-partials/taxering.php') : null ?>
+    <?php isset($object["tvAndBroadband"]["tv"]) || isset($object["tvAndBroadband"]["broadband"]) ? include_once ('object-view-partials/tv-and-broadband.php') : null ?>
+  </section>
+
+  <section class="fact" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
+    <?php isset($object["building"]) ? include ('object-view-partials/byggnad.php') : null ?>
+    <?php isset($object["association"]) ? include ('object-view-partials/föreningen.php') : null ?>
+    <?php empty($object["advertiseOn"]["marketplaces"]); ?>
+    <?php if (!empty($object["advertiseOn"]["marketplaces"])) ?>
+    <?php isset($object["baseInformation"]["other"]) ? include ('object-view-partials/base-information/other.php') : null ?>
+
   </section>
 
   <section class="viewing">
@@ -140,7 +166,7 @@
           Boarea kan variera beroende på olika uppmätningsnormer. Huruvida uppgiften stämmer med dagens mätmetod kan
           inte garanteras. Köparen uppmanas att om det är av stor vikt för honom/henne, kontrollera fastighetens boarea
           före köpet som ett led i sin undersökningsplikt. Ovanstående uppgifter är grundade på information lämnad av
-          säljaren och berörd myndighet. Uppgifter från säljaren kontrolleras av fastighetsmäklaren endast om
+          säljaren och berörd myndighet. Alla uppgifter från säljaren kontrolleras av fastighetsmäklaren endast om
           omständigheterna ger anledning till detta
         </p>
       </div>
@@ -152,7 +178,7 @@
     <div class="gallery-wrapper">
       <?php foreach ($object['images'] as $image => $value): ?>
         <?php if ($value['showImageOnInternet']) {
-          include('image-partial.php');
+          include ('image-partial.php');
         } ?>
       <?php endforeach; ?>
     </div>
@@ -162,17 +188,22 @@
     id="documents">
     <h3 style="text-align:center;">Dokument och länkar</h3>
     <div class="row">
-      <?php if (!empty($object['advertiseOn']['documents'])): ?>
+      <?php if (!empty($object['advertiseOn']['documents']) || !empty($object['advertiseOn']['links'])): ?>
         <?php foreach ($object['advertiseOn']['documents'] as $document => $value): ?>
-          <?php include('object-view-partials/document-partial.php'); ?>
+          <?php include ('object-view-partials/document-partial.php'); ?>
         <?php endforeach; ?>
+        <?php foreach ($object['advertiseOn']['links'] as $index => $value): ?>
+          <?php include ('object-view-partials/links-partial.php'); ?>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p style="text-align: center; width: 100%;">Kontakta mäklaren</p>
       <?php endif; ?>
     </div>
   </section>
 
   <?php
   if (isset(get_option('ctrl_options')['ctrl_field_cf7']) && !empty(get_option('ctrl_options')['ctrl_field_cf7'])) {
-    include('contact-form.php');
+    include ('contact-form.php');
   }
   ?>
 
@@ -184,8 +215,21 @@
 </div>
 
 <script>
+  jQuery(document).ready(function ($) {
+    $('section').each(function (index, element) {
+      if ($(element).text().trim() === '') {
+        $(element).remove();
+      }
+    });
+  });
+</script>
+
+<script>
 
   jQuery(document).ready(function ($) {
+    var objectNumber = $("[name='object-number']");
+    var localAddress = $("[name='local-address']").text().trim();
+    objectNumber.val(localAddress);
     var requestQueue = [];
     var loadingText = $("#loading-text");
     var runningRequests = 0;
@@ -285,7 +329,7 @@
     var high_quality_images = {
       <?php foreach ($object['images'] as $image => $value) {
         if ($value['showImageOnInternet']) {
-          echo '"' . $image . '": "' . $value['imageId'] . '",';
+          echo '"' . $image . '": "' . $value['imageId'] . '&w=1600&h=1600&quality=90&mode=max",';
         }
       } ?>
     };
@@ -318,4 +362,5 @@
   });
 
 </script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.4.1/index.min.js"></script>

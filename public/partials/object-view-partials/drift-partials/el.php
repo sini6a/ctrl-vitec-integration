@@ -3,7 +3,7 @@
         <p>El: </p>
         <p>
             <strong>
-                <?php echo isset($object["operation"]["electricity"]) ? number_format($object["operation"]["electricity"], 0, ',', ' ') . " kr/mån" : "Okänd" ?>
+                <?php echo isset($object["operation"]["electricity"]) ? number_format($object["operation"]["electricity"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
             </strong>
         </p>
     </div>

@@ -3,7 +3,7 @@
         <p>Försäkring: </p>
         <p>
             <strong>
-                <?php echo isset($object["operation"]["insurance"]) ? number_format($object["operation"]["insurance"], 0, ',', ' ') . " kr/mån" : "Okänd" ?>
+                <?php echo isset($object["operation"]["insurance"]) ? number_format($object["operation"]["insurance"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
             </strong>
         </p>
     </div>
