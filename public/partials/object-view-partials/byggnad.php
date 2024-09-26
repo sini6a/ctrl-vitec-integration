@@ -12,7 +12,7 @@
 </div>
 
 <h5>Allmän information</h5>
-<?php isset($object["description"]["generally"]) && $object["description"]["generally"] != "" ? include_once ('building-partials/beskrivning.php') : null ?>
+<?php isset($object["description"]["generally"]) && trim($object["description"]["generally"]) ? include_once ('building-partials/beskrivning.php') : null ?>
 <?php isset($object["building"]["otherAboutTheBuildning"]) && $object["building"]["otherAboutTheBuildning"] != "" ? include_once ('building-partials/övrigt.php') : null ?>
 <?php isset($object["participationAndRepairFund"]) ? include_once ('building-partials/andelstal-och-reparationsfond.php') : null ?>
 <?php isset($object["floorAndElevator"]) ? include_once ('building-partials/våning-hiss.php') : null ?>

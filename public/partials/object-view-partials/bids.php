@@ -25,7 +25,6 @@ $count = 0;
             <div class="column" style="background-color: <?php echo get_option('ctrl_options')['ctrl_field_bgcolor'] ?>; ">
 
                 <div class="space-between">
-
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="25" height="35" style="padding-bottom: 10px;"
                         id="auction">
                         <path
@@ -49,6 +48,8 @@ $count = 0;
                     <?php endif; ?>
                 </div>
             </div>
+            <?php if ($object["internetSettings"]["bidSetting"] === "ShowHighestBid")
+                break; ?>
         <?php endif; ?>
     <?php endforeach; ?>
 <?php endif; ?>
