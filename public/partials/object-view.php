@@ -20,6 +20,9 @@
 
 <div class="property">
 
+  <!-- <?php echo "<pre>";
+  var_dump($object);
+  echo "</pre>"; ?> -->
 
   <div class="property-image">
     <img id="main-image" src="<?php echo plugin_dir_url(dirname(__FILE__, 1)) . 'images/roller.svg' ?>" />

@@ -3,7 +3,17 @@
         <p>Väg/samfälligh.: </p>
         <p>
             <strong>
-                <?php echo isset($object["operation"]["roadCommunity"]) ? number_format($object["operation"]["roadCommunity"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
+                <?php
+                if (isset($object["operation"]["roadCommunity"])) {
+                    $roadCommunityCost = $object["operation"]["roadCommunity"];
+                    $formattedRoadCommunityCost = number_format($roadCommunityCost, 0, ',', ' ');
+                    echo isset($_GET['object_type']) && $_GET['object_type'] === 'housingCooperative'
+                        ? $formattedRoadCommunityCost . " kr/mån"
+                        : $formattedRoadCommunityCost . " kr/år";
+                } else {
+                    echo "Okänd";
+                }
+                ?>
             </strong>
         </p>
     </div>

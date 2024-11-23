@@ -3,7 +3,17 @@
         <p>Uppvärmning: </p>
         <p>
             <strong>
-                <?php echo isset($object["operation"]["heating"]) ? number_format($object["operation"]["heating"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
+                <?php
+                if (isset($object["operation"]["heating"])) {
+                    $heatingCost = $object["operation"]["heating"];
+                    $formattedHeatingCost = number_format($heatingCost, 0, ',', ' ');
+                    echo isset($_GET['object_type']) && $_GET['object_type'] === 'housingCooperative'
+                        ? $formattedHeatingCost . " kr/mån"
+                        : $formattedHeatingCost . " kr/år";
+                } else {
+                    echo "Okänd";
+                }
+                ?>
             </strong>
         </p>
     </div>

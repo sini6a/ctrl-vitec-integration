@@ -3,7 +3,17 @@
         <p>Renhållning: </p>
         <p>
             <strong>
-                <?php echo isset($object["operation"]["sanitation"]) ? number_format($object["operation"]["sanitation"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
+                <?php
+                if (isset($object["operation"]["sanitation"])) {
+                    $sanitationCost = $object["operation"]["sanitation"];
+                    $formattedSanitationCost = number_format($sanitationCost, 0, ',', ' ');
+                    echo isset($_GET['object_type']) && $_GET['object_type'] === 'housingCooperative'
+                        ? $formattedSanitationCost . " kr/mån"
+                        : $formattedSanitationCost . " kr/år";
+                } else {
+                    echo "Okänd";
+                }
+                ?>
             </strong>
         </p>
     </div>

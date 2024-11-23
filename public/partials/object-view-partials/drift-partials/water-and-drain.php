@@ -3,7 +3,17 @@
         <p>VA: </p>
         <p>
             <strong>
-                <?php echo isset($object["operation"]["waterAndDrain"]) ? number_format($object["operation"]["waterAndDrain"], 0, ',', ' ') . " kr/år" : "Okänd" ?>
+                <?php
+                if (isset($object["operation"]["waterAndDrain"])) {
+                    $waterAndDrainCost = $object["operation"]["waterAndDrain"];
+                    $formattedWaterAndDrainCost = number_format($waterAndDrainCost, 0, ',', ' ');
+                    echo isset($_GET['object_type']) && $_GET['object_type'] === 'housingCooperative'
+                        ? $formattedWaterAndDrainCost . " kr/mån"
+                        : $formattedWaterAndDrainCost . " kr/år";
+                } else {
+                    echo "Okänd";
+                }
+                ?>
             </strong>
         </p>
     </div>
