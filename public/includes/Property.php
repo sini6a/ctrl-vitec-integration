@@ -1,8 +1,15 @@
 <?php
 class Property
 {
-    public $houses, $cottages, $housingCooperativeses, $plots, $projects, $farms, $condominiums, $foreignProperties,
-    $premises;
+    public $houses = [];
+    public $cottages = [];
+    public $housingCooperativeses = [];
+    public $plots = [];
+    public $projects = [];
+    public $farms = [];
+    public $condominiums = [];
+    public $foreignProperties = [];
+    public $premises = [];
 
     private $placeholder;
 
@@ -15,11 +22,25 @@ class Property
         // Initialize $this->errors as an empty array
         $this->errors = [];
         // fetch data from the api
-        $this->username = get_option('ctrl_options')['ctrl_field_username'];
-        $this->password = get_option('ctrl_options')['ctrl_field_password'];
-        $this->customer_id = get_option('ctrl_options')['ctrl_field_customer_id'];
+        $options = get_option('ctrl_options');
+
+        $this->username = is_array($options) && isset($options['ctrl_field_username']) ? $options['ctrl_field_username'] : null;
+        $this->password = is_array($options) && isset($options['ctrl_field_password']) ? $options['ctrl_field_password'] : null;
+        $this->customer_id = is_array($options) && isset($options['ctrl_field_customer_id']) ? $options['ctrl_field_customer_id'] : null;
 
         $this->placeholder = plugin_dir_url(__FILE__) . 'images/ctrl-vitec-integration-placeholder.png';
+
+        // Ensure all properties are arrays to avoid warnings.
+        $this->houses = is_array($this->houses) ? $this->houses : [];
+        $this->cottages = is_array($this->cottages) ? $this->cottages : [];
+        $this->housingCooperativeses = is_array($this->housingCooperativeses) ? $this->housingCooperativeses : [];
+        $this->plots = is_array($this->plots) ? $this->plots : [];
+        $this->projects = is_array($this->projects) ? $this->projects : [];
+        $this->farms = is_array($this->farms) ? $this->farms : [];
+        $this->condominiums = is_array($this->condominiums) ? $this->condominiums : [];
+        $this->foreignProperties = is_array($this->foreignProperties) ? $this->foreignProperties : [];
+        $this->premises = is_array($this->premises) ? $this->premises : [];
+
     }
 
     function fetch(

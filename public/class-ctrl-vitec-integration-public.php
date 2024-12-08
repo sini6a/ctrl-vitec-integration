@@ -66,9 +66,17 @@ class Ctrl_Vitec_Integration_Public
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		$this->username = get_option('ctrl_options')['ctrl_field_username'];
-		$this->password = get_option('ctrl_options')['ctrl_field_password'];
-		$this->customer_id = get_option('ctrl_options')['ctrl_field_customer_id'];
+		// Safely get the options
+		$ctrl_options = get_option('ctrl_options');
+		if (is_array($ctrl_options)) {
+			$this->username = $ctrl_options['ctrl_field_username'] ?? null;
+			$this->password = $ctrl_options['ctrl_field_password'] ?? null;
+			$this->customer_id = $ctrl_options['ctrl_field_customer_id'] ?? null;
+		} else {
+			$this->username = null;
+			$this->password = null;
+			$this->customer_id = null;
+		}
 
 
 		$this->errors = [];
@@ -233,11 +241,16 @@ class Ctrl_Vitec_Integration_Public
 		);
 	}
 
-	// Define a custom function to remove temporary files
 	function remove_temporary_files()
 	{
 		// Specify the directory path
-		$directory = plugin_dir_url(__FILE__) . 'public/documents/';
+		$directory = plugin_dir_path(__FILE__) . 'public/documents/';
+
+		// Check if the directory exists
+		if (!is_dir($directory)) {
+			error_log('Temporary files directory does not exist: ' . $directory);
+			return;
+		}
 
 		// Get a list of files in the directory
 		$files = scandir($directory);
@@ -246,13 +259,12 @@ class Ctrl_Vitec_Integration_Public
 		foreach ($files as $file) {
 			// Check if the file is not a directory and starts with a dot (hidden file)
 			if (is_file($directory . $file) && substr($file, 0, 1) !== '.') {
-				// You can add additional conditions here if needed
-
 				// Remove the file
 				unlink($directory . $file);
 			}
 		}
 	}
+
 
 	// Hook the custom function into the WordPress cron system
 // You can adjust the frequency of the cron job as needed
@@ -260,7 +272,7 @@ class Ctrl_Vitec_Integration_Public
 	function schedule_remove_temporary_files_cron()
 	{
 		if (!wp_next_scheduled('remove_temporary_files_event')) {
-			wp_schedule_event(strtotime('midnight'), 'daily', array($this, 'remove_temporary_files_event'));
+			wp_schedule_event(strtotime('midnight'), 'daily', 'remove_temporary_files_event');
 		}
 	}
 
@@ -290,7 +302,7 @@ class Ctrl_Vitec_Integration_Public
 		if ($this->username == null || $this->password == null || $this->customer_id == null) {
 			array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration settings!</strong></h5>');
 			ob_start();
-			include_once ('partials/error.php');
+			include_once('partials/error.php');
 			return ob_get_clean();
 		}
 
@@ -318,11 +330,11 @@ class Ctrl_Vitec_Integration_Public
 			$agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
 
 			ob_start();
-			include_once ('partials/object-view.php');
+			include_once('partials/object-view.php');
 			return ob_get_clean();
 		} else {
 			ob_start();
-			include_once ('partials/object-listing.php');
+			include_once('partials/object-listing.php');
 			return ob_get_clean();
 		}
 	}
