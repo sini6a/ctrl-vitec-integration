@@ -12,6 +12,8 @@ class Property
 
     function __construct()
     {
+        // Initialize $this->errors as an empty array
+        $this->errors = [];
         // fetch data from the api
         $this->username = get_option('ctrl_options')['ctrl_field_username'];
         $this->password = get_option('ctrl_options')['ctrl_field_password'];
@@ -32,7 +34,7 @@ class Property
             array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration
         settings!</strong></h5>');
             ob_start();
-            include_once ('partials/error.php');
+            include_once('partials/error.php');
             return ob_get_clean();
         }
 
@@ -71,7 +73,7 @@ class Property
         $result = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            die (curl_getinfo($ch));
+            die(curl_getinfo($ch));
         }
 
         $info = curl_getinfo($ch);
@@ -112,7 +114,7 @@ class Property
             array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration
         settings!</strong></h5>');
             ob_start();
-            include_once ('partials/error.php');
+            include_once('partials/error.php');
             return ob_get_clean();
         }
         $status = '[{"name": "Till Salu",}, {"name": "Kommande",}]';
@@ -147,7 +149,7 @@ class Property
             array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration
         settings!</strong></h5>');
             ob_start();
-            include_once ('partials/error.php');
+            include_once('partials/error.php');
             return ob_get_clean();
         }
 
@@ -172,7 +174,7 @@ class Property
             array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration
         settings!</strong></h5>');
             ob_start();
-            include_once ('/partials/error.php');
+            include_once('/partials/error.php');
             return ob_get_clean();
         }
 
@@ -201,7 +203,7 @@ class Property
         $result = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            die (curl_getinfo($ch));
+            die(curl_getinfo($ch));
         }
 
         $info = curl_getinfo($ch);
@@ -247,7 +249,7 @@ class Property
             array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration
         settings!</strong></h5>');
             ob_start();
-            include_once ('partials/error.php');
+            include_once('partials/error.php');
             return ob_get_clean();
         }
         $URL = "https://connect.maklare.vitec.net/Image/GetImage?customerId=$this->customer_id&imageId=$id";
@@ -263,7 +265,7 @@ class Property
         $result = curl_exec($ch);
 
         if (curl_errno($ch)) {
-            die (curl_getinfo($ch));
+            die(curl_getinfo($ch));
         }
 
         $info = curl_getinfo($ch);
