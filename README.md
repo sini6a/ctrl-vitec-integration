@@ -26,7 +26,7 @@ To test the plugin, follow these steps:
 1.  Download the zipped file from this repository.
 2.  Upload the file directly to your WordPress website, similar to any other plugin installation.
 
-After installation, configure your credentials in the WordPress settings to establish a connection with your Vitec username/password. You can then implement the integration on any web page using the `[ctrl-vitec-integration]` shortcode.
+After installation, configure your credentials in the WordPress settings to establish a connection with your Vitec username/password. You can then implement the integration on any web page using the `[vitec-integration-shortcode]` shortcode.
 
 
 ## Changelog
