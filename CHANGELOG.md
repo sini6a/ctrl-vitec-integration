@@ -8,11 +8,14 @@
   - [vitec-till-salu] → status ID 3
   - [vitec-sald] → status ID 4
   - [vitec-referens] → status ID 10
+- In the settings there are an link to API documentation
 
 ### Changed
 - `updateProperties()` now supports optional `$status_id` filter
 - WordPress compatibility updated to 6.7.2
-- Author updated to [ajnadox](https://github.com/ajnadox)
+- contributor updated to [ajnadox](https://github.com/ajnadox)
+- moved settings menu from Settings to main left menu instead
+
 
 ### Fixed
 - Correct object detail rendering logic (replaced deprecated `getByType`)
