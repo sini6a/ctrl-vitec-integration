@@ -1,4 +1,3 @@
-<h1 style="color: red">DEBUG: FILE IS LOADED ✅</h1>
 <?php
 
 /**

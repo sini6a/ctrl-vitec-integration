@@ -1,37 +1,79 @@
-# CTRL Vitec WP Integration
 
- - Contributors: sini6a 
- - Donate link: [Support the Project](https://ctrl.mk/) or contribute improvements
- - Tags: ctrl, vitec, mäklarsystem 
- - Requires at least: 6.4 
- - Tested up to: 6.4.2 
- - Stable tag: / 
- - License: MIT 
- - License URI: [MIT License](https://www.mit.edu/~amini/LICENSE.md)
+# Ctrl Vitec Integration — Extended Version
 
-The CTRL Vitec WP Integration plugin seamlessly integrates the Swedish real estate system Vitec into your WordPress website. This plugin, written in pure PHP, leverages on-the-fly loading of data directly from the Vitec system.
+This is a **modified and extended version** of the [original Ctrl Vitec Integration plugin](https://github.com/sini6a/ctrl-vitec-integration) for WordPress, which integrates with the [Vitec API](https://connect.maklare.vitec.net/Help/Api/POST-Estate-GetEstateList) to display real estate listings.
 
-## Description
+This version adds multiple new shortcodes to support filtering by specific estate statuses such as "Intaget", "Till salu", "Såld", and "Referensobjekt".
 
-The CTRL Vitec WP Integration plugin seamlessly integrates the Swedish real estate system Vitec into your WordPress website. This plugin, written in pure PHP, leverages on-the-fly loading of data directly from the Vitec system. To optimize performance, the plugin initially loads essential data, such as images, in low quality and dynamically replaces them with high-quality versions using JavaScript in the background.
+---
+
+## 🔧 Features Added
+
+This version introduces **four new shortcodes**, each corresponding to a different status ID in the Vitec estate system:
+
+| Shortcode           | Vitec Status ID | Description              |
+|---------------------|------------------|--------------------------|
+| `[vitec-intaget]`   | `2`              | Shows estates marked as "Intaget" (Intake) |
+| `[vitec-till-salu]` | `3`              | Shows estates that are currently "Till salu" (For Sale) |
+| `[vitec-sald]`      | `4`              | Displays properties that are "Såld" (Sold) |
+| `[vitec-referens]`  | `10`             | Displays "Såld/Referensobjekt" (Sold/Reference) |
+
+Each shortcode loads the same design as the original `[vitec-integration-shortcode]`, but filtered by a single status ID.
+
+---
+
+## 🖥️ Usage
+
+Add any of the following shortcodes to a WordPress post or page:
+
+```wordpress
+[vitec-intaget]
+[vitec-till-salu]
+[vitec-sald]
+[vitec-referens]
+```
+
+Each shortcode will:
+- Display a list of properties filtered by status
+- Allow clicking into a detailed view using query parameters (`object_id`, `object_type`)
+
+---
+
+## 📦 Installation
+
+1. Download the latest zip release from this repo (or from the build system).
+2. In WordPress admin, go to **Plugins → Add New**.
+3. Click **Upload Plugin**, and choose the `.zip` file.
+4. Activate the plugin.
+5. Use one of the new shortcodes on a page or post.
+
+---
+
+## 🗂️ File Modifications Summary
+
+- `Property.php`: `updateProperties()` now accepts an optional `$status_id`
+- `class-ctrl-vitec-integration-public.php`: Added 4 new shortcode handlers
+
+---
+
+## 📄 License
+
+Inherited from the original MIT license by [sini6a](https://github.com/sini6a).
+
+---
+
+## 🧠 Credits
+
+- Original plugin: [sini6a/ctrl-vitec-integration](https://github.com/sini6a/ctrl-vitec-integration)
+- Extended by: [ajnadox](https://github.com/ajnadox)
 
 
-## Installation
+---
 
+## 📚 API Reference
 
-**Note: This plugin is currently under active development. While it is a functional version, there are ongoing improvements and additional features to be implemented.**
+This plugin communicates with the Vitec API using the following endpoint:
 
-To test the plugin, follow these steps:
+🔗 [POST /Estate/GetEstateList – Vitec API Docs](https://connect.maklare.vitec.net/Help/Api/POST-Estate-GetEstateList)
 
-1.  Download the zipped file from this repository.
-2.  Upload the file directly to your WordPress website, similar to any other plugin installation.
-
-After installation, configure your credentials in the WordPress settings to establish a connection with your Vitec username/password. You can then implement the integration on any web page using the `[ctrl-vitec-integration]` shortcode.
-
-
-## Changelog
-
--   **0.1:** Initial implementation of the plugin.
-## Contribution
-
-We welcome pull requests! If you plan to make major changes, please open an issue first to discuss the proposed modifications. Your contributions play a crucial role in enhancing the functionality and effectiveness of this integration. Thank you for considering contributing to the CTRL Vitec WP Integration plugin!
+This endpoint allows filtering by `status ID`, and supports returning all major property types.

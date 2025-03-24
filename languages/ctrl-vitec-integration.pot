@@ -1,0 +1,18 @@
+
+msgid ""
+msgstr ""
+"Project-Id-Version: ctrl-vitec-integration 1.2.4\n"
+"Report-Msgid-Bugs-To: https://github.com/ajnadox/ctrl-vitec-integration/issues\n"
+"POT-Creation-Date: 2025-03-23\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: public/includes/Property.php
+msgid "Please fill in your API credentials in administration settings!"
+msgstr ""
+
+#: public/includes/Property.php
+msgid "Status ID is required for this request."
+msgstr ""

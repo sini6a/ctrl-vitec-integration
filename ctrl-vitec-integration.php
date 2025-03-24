@@ -15,8 +15,10 @@
  * @wordpress-plugin
  * Plugin Name:       CTRL Vitec Integration
  * Plugin URI:        https://ctrl.mk
- * Description:       CTRL Integration Plugin for Vitec Real Estate
- * Version:           1.0.0
+ * Contributors: ajnadox, sini6a
+Description:       CTRL Integration Plugin for Vitec Real Estate
+ * Version: 1.2.4
+ * Stable tag: 1.2.4
  * Author:            CTRL
  * Author URI:        https://ctrl.mk
  * License:           GPL-2.0+
