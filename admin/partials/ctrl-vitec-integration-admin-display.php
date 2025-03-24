@@ -1,3 +1,4 @@
+<h1 style="color: red">DEBUG: FILE IS LOADED ✅</h1>
 <?php
 
 /**
@@ -14,3 +15,10 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+
+
+    <div style="margin-top: 20px;">
+        <a class="button button-secondary" href="https://connect.maklare.vitec.net/Help/Api/POST-Estate-GetEstateList" target="_blank">
+            View Vitec API Documentation
+        </a>
+    </div>
