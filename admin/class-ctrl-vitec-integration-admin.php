@@ -249,7 +249,9 @@ class Ctrl_Vitec_Integration_Admin
 	function ctrl_api_section_callback($args)
 	{
 		?>
-		<p id="<?php echo esc_attr($args['id']); ?>"><?php esc_html_e('Define API credentials and Customer ID.', 'ctrl'); ?><strong>
+<?php echo '<p><a class="button button-secondary" href="https://connect.maklare.vitec.net/Help/Api/POST-Estate-GetEstateList" target="_blank">📄 Vitec API Documentation</a></p>'; ?>
+
+<?php esc_html_e('Define API credentials and Customer ID.', 'ctrl'); ?>
 				<?php esc_html_e('This section is required!', 'ctrl'); ?>
 			</strong></p>
 		<?php
@@ -364,7 +366,7 @@ class Ctrl_Vitec_Integration_Admin
 	 */
 	public function ctrl_options_page()
 	{
-		add_submenu_page('options-general.php', 'CTRL', 'Vitec Integration Options', 'manage_options', 'ctrl', array($this, 'ctrl_options_page_html'));
+		add_menu_page('Vitec Integration', 'Vitec Integration', 'manage_options', 'ctrl', array($this, 'ctrl_options_page_html'));
 	}
 
 

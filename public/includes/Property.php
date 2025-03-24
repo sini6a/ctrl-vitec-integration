@@ -128,7 +128,18 @@ class Property
         }
     }
 
-    function updateProperties($URL = "https://connect.maklare.vitec.net/Estate/GetEstateList")
+    /**
+     * Updates internal property arrays from the Vitec API response.
+     *
+     * Sends a POST request to the Vitec GetEstateList endpoint using the configured
+     * customer ID and API credentials. Filters data optionally by status ID.
+     *
+     * @param string $URL The endpoint URL to fetch data from.
+     * @param int|null $status_id Optional status ID to filter properties by.
+     * @return void
+     * @since 1.2.4
+     */
+    function updateProperties($URL = "https://connect.maklare.vitec.net/Estate/GetEstateList", $status_id = null)
     {
         // Check if variables are not set do not execute the function and report to user
         if ($this->username == null || $this->password == null || $this->customer_id == null) {
@@ -138,7 +149,14 @@ class Property
             include_once('partials/error.php');
             return ob_get_clean();
         }
-        $status = '[{"name": "Till Salu",}, {"name": "Kommande",}]';
+        // If a status ID is given, use it in request; otherwise, default to "Till Salu" and "Kommande"
+        if (!$status_id) {
+            array_push($this->errors, '<h5 class="center"><strong>Status ID is required for this request.</strong></h5>');
+            ob_start();
+            include_once('partials/error.php');
+            return ob_get_clean();
+        }
+        $status = '[{"id": "' . $status_id . '"}]';
         $request = '{
             "customerId":"' . $this->customer_id . '",
             "statuses":' . $status . ',

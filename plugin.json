@@ -1,0 +1,19 @@
+{
+  "name": "ctrl-vitec-integration",
+  "slug": "ctrl-vitec-integration",
+  "version": "1.2.4",
+  "author": "CTRL <info@ctrl.mk>",
+  "contributors": [
+    "ajnadox",
+    "sini6a"
+  ],
+  "tested": "6.7.2",
+  "requires": "5.8",
+  "requires_php": "7.4",
+  "homepage": "https://github.com/ajnadox/ctrl-vitec-integration",
+  "download_url": "https://your-domain.com/path-to/ctrl-vitec-integration-v1.2.4-github-release.zip",
+  "sections": {
+    "description": "WordPress plugin for syncing and displaying real estate listings from the Vitec API.",
+    "changelog": "See CHANGELOG.md for full update log."
+  }
+}

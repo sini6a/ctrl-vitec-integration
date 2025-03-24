@@ -89,6 +89,11 @@ class Ctrl_Vitec_Integration_Public
 		add_filter('query_vars', array($this, 'custom_query_vars'));
 		add_action('template_redirect', array($this, 'process_object_number'));
 		add_shortcode('vitec-integration-shortcode', array($this, 'ctrl_vitec_integration_shortcode'));
+		add_shortcode('vitec-intaget', array($this, 'ctrl_vitec_shortcode_status_2'));
+add_shortcode('vitec-till-salu', array($this, 'ctrl_vitec_shortcode_status_3'));
+add_shortcode('vitec-sald', array($this, 'ctrl_vitec_shortcode_status_4'));
+add_shortcode('vitec-referens', array($this, 'ctrl_vitec_shortcode_status_10'));
+
 		add_action('wp_enqueue_styles', array($this, 'enqueue_styles'));
 		add_action('wp_enqueue_scripts', array($this, 'enqueue_scripts'));
 		add_action('wp_ajax_load_api_image', array($this, 'my_ajax_handler'));
@@ -338,4 +343,221 @@ class Ctrl_Vitec_Integration_Public
 			return ob_get_clean();
 		}
 	}
+
+    /**
+     * Shortcode handler for displaying properties with status ID 2 (Intaget).
+     *
+     * This function loads either a listing or a detailed view of properties based on query parameters.
+     * Status ID is passed into the updateProperties() call to filter which properties to retrieve.
+     *
+     * @param array $atts Shortcode attributes (unused).
+     * @param string|null $content Shortcode content (unused).
+     * @return string Rendered HTML output of property list or detail view.
+     * @since 1.2.4
+     */
+    public function ctrl_vitec_shortcode_status_2($atts = [], $content = null)
+    {
+        if ($this->username == null || $this->password == null || $this->customer_id == null) {
+            array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration settings!</strong></h5>');
+            ob_start();
+            include_once('partials/error.php');
+            return ob_get_clean();
+        }
+
+        $this->properties->updateProperties("https://connect.maklare.vitec.net/Estate/GetEstateList", 2);
+
+        if (isset($_GET['object_id'])) {
+            if (isset($_GET['object_type']) && $_GET['object_type'] == 'housingCooperative') {
+                $object = $this->properties->getHousingCooperative($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'house') {
+                $object = $this->properties->getHouse($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'cottage') {
+                $object = $this->properties->getCottage($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'condominium') {
+                $object = $this->properties->getCondominium($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'farm') {
+                $object = $this->properties->getFarm($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'foreignProperty') {
+                $object = $this->properties->getForeignProperty($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'plot') {
+                $object = $this->properties->getPlot($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'premise') {
+                $object = $this->properties->getPremise($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'project') {
+                $object = $this->properties->getProject($_GET['object_id']);
+            }
+
+            $agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
+            ob_start();
+            include_once('partials/object-view.php');
+            return ob_get_clean();
+        } else {
+            ob_start();
+            include_once('partials/object-listing.php');
+            return ob_get_clean();
+        }
+    }
+    
+    /**
+     * Shortcode handler for displaying properties with status ID 3 (Till Salu).
+     *
+     * This function loads either a listing or a detailed view of properties based on query parameters.
+     * Status ID is passed into the updateProperties() call to filter which properties to retrieve.
+     *
+     * @param array $atts Shortcode attributes (unused).
+     * @param string|null $content Shortcode content (unused).
+     * @return string Rendered HTML output of property list or detail view.
+     * @since 1.2.4
+     */
+    public function ctrl_vitec_shortcode_status_3($atts = [], $content = null)
+    {
+        if ($this->username == null || $this->password == null || $this->customer_id == null) {
+            array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration settings!</strong></h5>');
+            ob_start();
+            include_once('partials/error.php');
+            return ob_get_clean();
+        }
+
+        $this->properties->updateProperties("https://connect.maklare.vitec.net/Estate/GetEstateList", 3);
+
+        if (isset($_GET['object_id'])) {
+            if (isset($_GET['object_type']) && $_GET['object_type'] == 'housingCooperative') {
+                $object = $this->properties->getHousingCooperative($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'house') {
+                $object = $this->properties->getHouse($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'cottage') {
+                $object = $this->properties->getCottage($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'condominium') {
+                $object = $this->properties->getCondominium($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'farm') {
+                $object = $this->properties->getFarm($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'foreignProperty') {
+                $object = $this->properties->getForeignProperty($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'plot') {
+                $object = $this->properties->getPlot($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'premise') {
+                $object = $this->properties->getPremise($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'project') {
+                $object = $this->properties->getProject($_GET['object_id']);
+            }
+
+            $agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
+            ob_start();
+            include_once('partials/object-view.php');
+            return ob_get_clean();
+        } else {
+            ob_start();
+            include_once('partials/object-listing.php');
+            return ob_get_clean();
+        }
+    }
+    
+    /**
+     * Shortcode handler for displaying properties with status ID 4 (Såld).
+     *
+     * This function loads either a listing or a detailed view of properties based on query parameters.
+     * Status ID is passed into the updateProperties() call to filter which properties to retrieve.
+     *
+     * @param array $atts Shortcode attributes (unused).
+     * @param string|null $content Shortcode content (unused).
+     * @return string Rendered HTML output of property list or detail view.
+     * @since 1.2.4
+     */
+    public function ctrl_vitec_shortcode_status_4($atts = [], $content = null)
+    {
+        if ($this->username == null || $this->password == null || $this->customer_id == null) {
+            array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration settings!</strong></h5>');
+            ob_start();
+            include_once('partials/error.php');
+            return ob_get_clean();
+        }
+
+        $this->properties->updateProperties("https://connect.maklare.vitec.net/Estate/GetEstateList", 4);
+
+        if (isset($_GET['object_id'])) {
+            if (isset($_GET['object_type']) && $_GET['object_type'] == 'housingCooperative') {
+                $object = $this->properties->getHousingCooperative($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'house') {
+                $object = $this->properties->getHouse($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'cottage') {
+                $object = $this->properties->getCottage($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'condominium') {
+                $object = $this->properties->getCondominium($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'farm') {
+                $object = $this->properties->getFarm($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'foreignProperty') {
+                $object = $this->properties->getForeignProperty($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'plot') {
+                $object = $this->properties->getPlot($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'premise') {
+                $object = $this->properties->getPremise($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'project') {
+                $object = $this->properties->getProject($_GET['object_id']);
+            }
+
+            $agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
+            ob_start();
+            include_once('partials/object-view.php');
+            return ob_get_clean();
+        } else {
+            ob_start();
+            include_once('partials/object-listing.php');
+            return ob_get_clean();
+        }
+    }
+    
+    /**
+     * Shortcode handler for displaying properties with status ID 10 (Såld/Referensobjekt).
+     *
+     * This function loads either a listing or a detailed view of properties based on query parameters.
+     * Status ID is passed into the updateProperties() call to filter which properties to retrieve.
+     *
+     * @param array $atts Shortcode attributes (unused).
+     * @param string|null $content Shortcode content (unused).
+     * @return string Rendered HTML output of property list or detail view.
+     * @since 1.2.4
+     */
+    public function ctrl_vitec_shortcode_status_10($atts = [], $content = null)
+    {
+        if ($this->username == null || $this->password == null || $this->customer_id == null) {
+            array_push($this->errors, '<h5 class="center"><strong>Please fill in your API credentials in administration settings!</strong></h5>');
+            ob_start();
+            include_once('partials/error.php');
+            return ob_get_clean();
+        }
+
+        $this->properties->updateProperties("https://connect.maklare.vitec.net/Estate/GetEstateList", 10);
+
+        if (isset($_GET['object_id'])) {
+            if (isset($_GET['object_type']) && $_GET['object_type'] == 'housingCooperative') {
+                $object = $this->properties->getHousingCooperative($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'house') {
+                $object = $this->properties->getHouse($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'cottage') {
+                $object = $this->properties->getCottage($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'condominium') {
+                $object = $this->properties->getCondominium($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'farm') {
+                $object = $this->properties->getFarm($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'foreignProperty') {
+                $object = $this->properties->getForeignProperty($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'plot') {
+                $object = $this->properties->getPlot($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'premise') {
+                $object = $this->properties->getPremise($_GET['object_id']);
+            } else if (isset($_GET['object_type']) && $_GET['object_type'] == 'project') {
+                $object = $this->properties->getProject($_GET['object_id']);
+            }
+
+            $agent = $this->properties->getAgent($object['assignment']['responsibleBroker']);
+            ob_start();
+            include_once('partials/object-view.php');
+            return ob_get_clean();
+        } else {
+            ob_start();
+            include_once('partials/object-listing.php');
+            return ob_get_clean();
+        }
+    }
+    
 }
